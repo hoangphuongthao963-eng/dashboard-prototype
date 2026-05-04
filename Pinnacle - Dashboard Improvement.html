@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinnacle Dashboard Prototype</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Authentication Flow -->
+    <div id="auth-container">
+        <!-- ============================================================
+             SCREEN 1: LOGIN
+        ============================================================ -->
+        <div id="view-login" class="pn-screen auth-screen active">
+            <div class="auth-card">
+                <img class="auth-brand-top" src="https://dashboard-prototype-eta.vercel.app/assets/logo.png"
+                    alt="Pinnacle">
+                <img class="auth-brand-bottom" src="https://dashboard-prototype-eta.vercel.app/assets/Footer.png"
+                    alt="">
+                <div class="auth-card-body">
+                    <div class="auth-title">Welcome</div>
+                    <div class="auth-subtitle">Please enter your contact details to connect.</div>
+                    <div class="auth-form-group">
+                        <label for="login-email"><span class="auth-required">*</span>Email</label>
+                        <input id="login-email" class="auth-input" type="email" placeholder="Enter your email"
+                            value="ian.charlton@pinnacleqm.com">
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="login-password"><span class="auth-required">*</span>Password</label>
+                        <input id="login-password" class="auth-input" type="password" placeholder="Enter your password"
+                            value="••••••••">
+                    </div>
+                    <div class="auth-form-row">
+                        <button class="auth-forgot"
+                            onclick="alert('Please contact your administrator to reset your password.')">Forgot
+                            password</button>
+                    </div>
+                    <button class="auth-btn" id="btn-sign-in">Sign in</button>
+                </div>
+                <div class="auth-copyright">© Copyright PinnacleQM 2014 - 2026. All Rights Reserved</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SCREEN 2: PRODUCT SELECTION
+        ============================================================ -->
+        <div id="view-product" class="pn-screen auth-screen">
+            <div class="auth-card">
+                <img class="auth-brand-top" src="https://dashboard-prototype-eta.vercel.app/assets/logo.png"
+                    alt="Pinnacle">
+                <img class="auth-brand-bottom" src="https://dashboard-prototype-eta.vercel.app/assets/Footer.png"
+                    alt="">
+                <div class="auth-card-body">
+                    <div class="auth-title">Products Selection</div>
+                    <div class="auth-subtitle">Please select the Products that you will use.</div>
+                    <div class="product-grid">
+                        <div class="product-card active" id="prod-qmf" data-product="QMF">
+                            <img src="https://dashboard-prototype-eta.vercel.app/assets/qmfactory-active.png"
+                                id="prod-img-qmf" alt="QMFactory">
+                        </div>
+                        <div class="product-card active" id="prod-eng" data-product="ENG">
+                            <img src="https://dashboard-prototype-eta.vercel.app/assets/enginuity-active.png"
+                                id="prod-img-eng" alt="Enginuity">
+                        </div>
+                        <div class="product-card active" id="prod-auth" data-product="AUTH">
+                            <img src="https://dashboard-prototype-eta.vercel.app/assets/authorise-active.png"
+                                id="prod-img-auth" alt="Authorise">
+                        </div>
+                    </div>
+                    <div class="product-helper-text">You will be an active user for the chosen Products from your
+                        licence until the end of your session</div>
+                    <div class="product-btn-group">
+                        <button class="auth-btn" id="btn-continue">Continue</button>
+                        <button class="auth-btn-secondary" id="btn-logout">Log out</button>
+                    </div>
+                </div>
+                <div class="auth-copyright">© Copyright PinnacleQM 2014 - 2026. All Rights Reserved</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Wrapper (Hidden initially) -->
+    <div id="app-container" class="hidden" style="width: 100%; height: 100%;">
+        <!-- SCREEN 3: DASHBOARD SHELL -->
+        <div id="screen-dashboard" style="display:flex; flex-direction:column; height:100vh; width:100%;">
+
+            <!-- HEADER -->
+            <header class="pn-header">
+                <div class="pn-header-left">
+                    <img class="pn-logo" src="https://dashboard-prototype-eta.vercel.app/assets/logo.png"
+                        alt="Pinnacle">
+                    <span class="pn-env-label">QA Environment</span>
+                    <span id="breadcrumb"
+                        style="margin-left: 20px; font-size: 13px; color: var(--color-text-muted);"></span>
+                </div>
+                <div class="pn-header-right">
+                    <!-- Info icon -->
+                    <svg class="pn-header-icon" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="opacity:0.5;cursor:not-allowed;">
+                        <path
+                            d="M3 15C3 16.58 3.31 18.14 3.91 19.59C4.52 21.05 5.4 22.37 6.51 23.49C7.63 24.6 8.95 25.48 10.41 26.09C11.86 26.69 13.42 27 15 27C16.58 27 18.14 26.69 19.59 26.09C21.05 25.48 22.37 24.6 23.49 23.49C24.6 22.37 25.48 21.05 26.09 19.59C26.69 18.14 27 16.58 27 15C27 11.82 25.74 8.77 23.49 6.51C21.23 4.26 18.18 3 15 3C11.82 3 8.77 4.26 6.51 6.51C4.26 8.77 3 11.82 3 15Z"
+                            stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M15 11.25H15.01" stroke="#292D32" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M14 15H15V20H16" stroke="#292D32" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <!-- Admin Functions -->
+                    <div class="pn-admin-wrapper" id="admin-wrapper">
+                        <svg class="pn-header-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            id="settings-btn" style="cursor:pointer;">
+                            <path
+                                d="M12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15Z"
+                                stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path
+                                d="M2 12.88V11.12C2 10.08 2.85 9.22 3.9 9.22C5.71 9.22 6.45 7.94 5.54 6.37C5.02 5.47 5.33 4.3 6.24 3.78L7.97 2.79C8.76 2.32 9.78 2.6 10.25 3.39L10.36 3.58C11.26 5.15 12.74 5.15 13.65 3.58L13.76 3.39C14.23 2.6 15.25 2.32 16.04 2.79L17.77 3.78C18.68 4.3 18.99 5.47 18.47 6.37C17.56 7.94 18.3 9.22 20.11 9.22C21.15 9.22 22.01 10.07 22.01 11.12V12.88C22.01 13.92 21.16 14.78 20.11 14.78C18.3 14.78 17.56 16.06 18.47 17.63C18.99 18.54 18.68 19.7 17.77 20.22L16.04 21.21C15.25 21.68 14.23 21.4 13.76 20.61L13.65 20.42C12.75 18.85 11.27 18.85 10.36 20.42L10.25 20.61C9.78 21.4 8.76 21.68 7.97 21.21L6.24 20.22C5.33 19.7 5.02 18.53 5.54 17.63C6.45 16.06 5.71 14.78 3.9 14.78C2.85 14.78 2 13.92 2 12.88Z"
+                                stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <div class="pn-admin-popover" id="settings-dropdown">
+                            <div class="dropdown-item pn-admin-item" data-view="settings-licence">Licence Management
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-roles">Roles and Permissions
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-services">Service Catalogue
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-projects">Project Management
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-requests">Service Request</div>
+                        </div>
+                    </div>
+                    <!-- User -->
+                    <div class="pn-user-info">
+                        <span>Ian Charlton</span>
+                        <div class="pn-avatar">IC</div>
+                    </div>
+                    <!-- Logout -->
+                    <button class="pn-logout-btn" id="btn-logout-header">Logout</button>
+                </div>
+            </header>
+
+            <!-- BODY -->
+            <div class="pn-body">
+
+                <!-- SIDEBAR -->
+                <nav class="pn-sidebar">
+
+                    <!-- Project Selector -->
+                    <div class="pn-project-area">
+                        <div class="pn-project-label">Select a Project</div>
+                        <select class="pn-project-select">
+                            <option>Staging Sandpit</option>
+                        </select>
+                    </div>
+
+                    <hr class="pn-sidebar-divider">
+                    <div class="pn-main-menu-label">Main Menu</div>
+
+                    <!-- Worklist -->
+                    <div class="pn-menu-item disabled">
+                        <img class="pn-menu-icon"
+                            src="https://dashboard-prototype-eta.vercel.app/assets/icons/home-icon.svg" alt="">
+                        Worklist <span class="pn-badge">(0)</span>
+                    </div>
+
+                    <hr class="pn-sidebar-divider">
+
+                    <!-- DASHBOARD GROUP -->
+                    <div class="pn-group-header"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-dashboard').classList.toggle('collapsed');">
+                        DASHBOARD <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items" id="grp-dashboard" style="max-height:none;">
+                        <a class="pn-menu-item nav-item active" data-view="gallery" id="nav-gallery-parent">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/dashboard.svg" alt="">
+                            Dashboard Gallery
+                        </a>
+                        <!-- Submenu for Dashboards -->
+                        <div class="submenu" id="sidebar-dashboards-list"
+                            style="padding-left: 20px; font-size: 12px; background: rgba(0,0,0,0.1);">
+                            <!-- Dashboards dynamically populated here -->
+                        </div>
+
+                        <a class="pn-menu-item nav-item" data-view="manage-dashboards">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/dashboard.svg" alt="">
+                            Manage Dashboards
+                        </a>
+                        <a class="pn-menu-item nav-item" data-view="data-sources">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/document-convert-icon.svg"
+                                alt="">
+                            Data Sources
+                        </a>
+                        <a class="pn-menu-item nav-item" data-view="sql-lab">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/workbench.svg" alt="">
+                            SQL Lab
+                        </a>
+                    </div>
+
+                    <!-- QMFACTORY GROUP -->
+                    <div class="pn-group-header collapsed"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-qmf').classList.toggle('collapsed');">
+                        QMFACTORY <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items collapsed" id="grp-qmf" style="max-height:600px;">
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/release.svg" alt="">Release
+                        </div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/user-story.svg" alt="">User
+                            Stories</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/document-convert-icon.svg"
+                                alt="">Document</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/decision-table-icon.svg"
+                                alt="">Decision Table</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/test-design-icon.svg"
+                                alt="">Test Design</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/workbench.svg"
+                                alt="">Workbench</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/test-lab.svg" alt="">Test
+                            Lab</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/execute.svg" alt="">Execute
+                        </div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/bug.svg" alt="">Defect
+                        </div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/report.svg" alt="">Reports
+                        </div>
+                    </div>
+
+                    <!-- ENGINUITY GROUP -->
+                    <div class="pn-group-header collapsed"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-eng').classList.toggle('collapsed');">
+                        ENGINUITY <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items collapsed" id="grp-eng" style="max-height:300px;">
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/ai-menu-icon.svg" alt="">AI
+                            &amp; ML</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/enginuity-workbench.svg"
+                                alt="">Enginuity Workbench</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/batch-scheduling-icon.svg"
+                                alt="">Enginuity Batch</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/VTM-icon.svg"
+                                alt="">Virtual Tester Monitor</div>
+                    </div>
+
+                    <!-- AUTHORISE GROUP -->
+                    <div class="pn-group-header collapsed"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-auth').classList.toggle('collapsed');">
+                        AUTHORISE <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items collapsed" id="grp-auth" style="max-height:300px;">
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/acceptancecriteria.svg"
+                                alt="">Acceptance Criteria</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/acceptance-article-icon.svg"
+                                alt="">My Dashboard</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/clipboard-tick.svg"
+                                alt="">Authorise Batch</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/authorise-workbench.svg"
+                                alt="">Authorise Workbench</div>
+                    </div>
+                </nav>
+
+                <!-- PROTOTYPE CONTENT (replaces iframe) -->
+                <main class="pn-content">
+
+                    <!-- VIEW: Gallery -->
+                    <main class="view-container active-view" id="view-gallery">
+                        <div class="view-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Dashboard Gallery</h2>
+                                <p class="text-muted">Select a dashboard to view insights or manage analytics.</p>
+                            </div>
+                            <div class="drawer-search"
+                                style="width: 300px; border: 1px solid var(--color-border); border-radius: 4px; padding: 8px 12px; display: flex; align-items: center; gap: 8px;">
+                                <i data-lucide="search"
+                                    style="width: 16px; height: 16px; color: var(--color-text-muted);"></i>
+                                <input type="text" id="gallery-search" placeholder="Search 14 dashboards..."
+                                    style="border: none; outline: none; width: 100%;">
+                            </div>
+                        </div>
+
+                        <div class="gallery-grid" id="gallery-all" style="padding-top: var(--spacing-4);"></div>
+                    </main>
+
+                    <!-- VIEW: Single Dashboard -->
+                    <main class="view-container hidden" id="view-dashboard"
+                        style="overflow: hidden; display: flex; flex-direction: column;">
+
+                        <!-- Global Filter Bar -->
+                        <div class="global-filter-bar">
+
+                            <!-- Date Range Filter -->
+                            <div class="filter-group">
+                                <label>Date Range</label>
+                                <div class="filter-control" id="filter-date-btn">
+                                    <i data-lucide="calendar"></i><span id="date-label">Last 30 Days</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-date">
+                                    <div class="dropdown-flex">
+                                        <div class="dropdown-presets">
+                                            <div class="dropdown-item preset-item">Last 7 days</div>
+                                            <div class="dropdown-item preset-item active">Last 30 days</div>
+                                            <div class="dropdown-item preset-item">Last 6 months</div>
+                                        </div>
+                                        <div class="dropdown-calendar">
+                                            <div class="text-muted" style="text-align:center; padding: 20px;">[Mock
+                                                Calendar Picker]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project Filter -->
+                            <div class="filter-group">
+                                <label>Project</label>
+                                <div class="filter-control" id="filter-project-btn">
+                                    <i data-lucide="folder"></i><span id="project-label">All Projects</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-project">
+                                    <div class="dropdown-item">All Projects</div>
+                                    <div class="dropdown-item">Staging Sandpit</div>
+                                    <div class="dropdown-item">Florence Health</div>
+                                </div>
+                            </div>
+
+                            <!-- Severity Filter -->
+                            <div class="filter-group">
+                                <label>Severity</label>
+                                <div class="filter-control" id="filter-severity-btn">
+                                    <i data-lucide="alert-triangle"></i><span id="severity-label">All Severities</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-severity">
+                                    <div class="dropdown-item">All Severities</div>
+                                    <div class="dropdown-item">1 – Critical</div>
+                                    <div class="dropdown-item">2 – High</div>
+                                    <div class="dropdown-item">3 – Medium</div>
+                                    <div class="dropdown-item">4 – Low</div>
+                                    <div class="dropdown-item">9 – Other</div>
+                                </div>
+                            </div>
+
+                            <!-- Assign To Filter -->
+                            <div class="filter-group">
+                                <label>Assign To</label>
+                                <div class="filter-control" id="filter-assign-btn">
+                                    <i data-lucide="user"></i><span id="assign-label">All</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-assign">
+                                    <div class="dropdown-item">All</div>
+                                    <div class="dropdown-item">Ian</div>
+                                    <div class="dropdown-item">Swathi</div>
+                                </div>
+                            </div>
+
+                            <div class="filter-group"
+                                style="margin-left: auto; flex-direction: row; align-items: center; gap: 12px;">
+                                <button id="toolbar-data-sources-btn" class="btn btn-secondary"
+                                    onclick="document.querySelector('.nav-item[data-view=\'data-sources\']').click()">
+                                    <i data-lucide="database"></i> Data Sources
+                                </button>
+                                <button id="customize-btn" class="btn btn-primary">
+                                    <i data-lucide="edit-3"></i> Customise
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-area"
+                            style="flex: 1; overflow-y: auto; padding: var(--spacing-4); background-color: var(--color-bg-app);">
+                            <div class="dashboard-header">
+                                <h2 id="current-dashboard-title">Dashboard Title</h2>
+                                <div class="dashboard-actions hidden" id="edit-mode-actions">
+                                    <button class="btn btn-secondary" id="reset-layout-btn"
+                                        style="color: var(--color-error); border-color: var(--color-error);">
+                                        <i data-lucide="rotate-ccw"></i> Reset Layout
+                                    </button>
+                                    <button class="btn btn-secondary" id="add-widget-btn">
+                                        <i data-lucide="plus"></i> Add Widget
+                                    </button>
+                                    <button class="btn btn-primary" id="save-layout-btn">
+                                        <i data-lucide="save"></i> Save Layout
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="grid-stack" id="main-grid">
+                                <!-- Widgets dynamically loaded here -->
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: SQL Lab -->
+                    <main class="view-container hidden" id="view-sql-lab">
+                        <div class="view-header">
+                            <h2>SQL Lab</h2>
+                            <p class="text-muted">Ad-hoc query editor against connected databases.</p>
+                            <div class="sql-lab-container">
+                                <div class="sql-toolbar">
+                                    <div style="display:flex; flex-direction:column; gap:4px;">
+                                        <label
+                                            style="font-size:12px; color:var(--color-text-muted); font-weight:600;">Database
+                                            selector</label>
+                                        <select class="form-select">
+                                            <option>WorkBench</option>
+                                            <option>AutomationOR</option>
+                                        </select>
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; gap:4px;">
+                                        <label
+                                            style="font-size:12px; color:var(--color-text-muted); font-weight:600;">Schema
+                                            selector</label>
+                                        <select class="form-select">
+                                            <option>public</option>
+                                            <option>dbo</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary" id="run-query-btn"
+                                        style="margin-left: var(--spacing-2); align-self: flex-end;">
+                                        <i data-lucide="play"></i> Run Query
+                                    </button>
+                                </div>
+                                <textarea class="sql-editor"
+                                    placeholder="SELECT * FROM defects WHERE severity = 'Critical' LIMIT 100;"></textarea>
+                                <div class="sql-results">
+                                    <div class="placeholder-text" id="sql-empty-state">Run a query to see results here.
+                                    </div>
+                                    <table class="data-table hidden" id="sql-results-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Title</th>
+                                                <th>Severity</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>DEF-102</td>
+                                                <td>Login timeout on prod</td>
+                                                <td><span class="badge badge-error">Critical</span></td>
+                                                <td>Open</td>
+                                            </tr>
+                                            <tr>
+                                                <td>DEF-105</td>
+                                                <td>API 500 error</td>
+                                                <td><span class="badge badge-error">Critical</span></td>
+                                                <td>In Progress</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Data Sources -->
+                    <main class="view-container hidden" id="view-data-sources">
+                        <div class="view-header">
+                            <h2>Data Sources</h2>
+                            <p class="text-muted">Manage database connections that feed the dashboards.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <button class="btn btn-primary" style="margin-bottom: var(--spacing-3);"
+                                onclick="openMockModal('New Data Source')">
+                                <i data-lucide="plus"></i> Add Data Source
+                            </button>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Database Type</th>
+                                        <th>Host</th>
+                                        <th>Status</th>
+                                        <th>Tables Synced</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>WorkBench</td>
+                                        <td>MS SQL Server</td>
+                                        <td>sql-prod-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
+                                        </td>
+                                        <td>142</td>
+                                        <td>
+                                            <button class="icon-btn" title="Test Connection"
+                                                onclick="showToast('✅ Connection Successful')"><i
+                                                    data-lucide="plug"></i></button>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit WorkBench Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Sync Tables"
+                                                onclick="showToast('🔄 Syncing Tables...')"><i
+                                                    data-lucide="refresh-cw"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete WorkBench Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>AutomationOR</td>
+                                        <td>PostgreSQL</td>
+                                        <td>db-auto-02.internal</td>
+                                        <td><span class="badge badge-error">Failing</span></td>
+                                        <td>56</td>
+                                        <td>
+                                            <button class="icon-btn" title="Test Connection"
+                                                onclick="showToast('❌ Connection Failed: Timeout')"><i
+                                                    data-lucide="plug"></i></button>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit AutomationOR Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Sync Tables"
+                                                onclick="showToast('🔄 Syncing Tables...')"><i
+                                                    data-lucide="refresh-cw"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete AutomationOR Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Manage Dashboards -->
+                    <main class="view-container hidden" id="view-manage-dashboards">
+                        <div class="view-header">
+                            <h2>Manage Dashboards</h2>
+                            <p class="text-muted">Admin view of all dashboards and their ownership.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <button class="btn btn-primary" style="margin-bottom: var(--spacing-3);"
+                                onclick="switchView('create-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Create Dashboard';">
+                                <i data-lucide="plus"></i> New Dashboard
+                            </button>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Owner</th>
+                                        <th>Chart Count</th>
+                                        <th>Last Modified</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Defect Trend</td>
+                                        <td>System</td>
+                                        <td>4</td>
+                                        <td>2 hours ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Active</span>
+                                        </td>
+                                        <td>
+                                            <button class="icon-btn" title="Configure Layout"
+                                                onclick="showToast('Navigating to Edit Mode...')"><i
+                                                    data-lucide="layout"></i></button>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="openMockModal('Edit Defect Trend Details')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Defect Trend Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Release Health (SD3)</td>
+                                        <td>Ian Charlton</td>
+                                        <td>4</td>
+                                        <td>1 day ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Active</span>
+                                        </td>
+                                        <td>
+                                            <button class="icon-btn" title="Configure Layout"
+                                                onclick="showToast('Navigating to Edit Mode...')"><i
+                                                    data-lucide="layout"></i></button>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="openMockModal('Edit Release Health Details')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Release Health Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+                    <!-- VIEW: Create Dashboard -->
+                    <main class="view-container hidden" id="view-create-dashboard">
+                        <div class="view-header"
+                            style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <button class="btn btn-secondary"
+                                    style="margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 8px;"
+                                    onclick="switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">
+                                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back
+                                </button>
+                                <h2>Create Dashboard</h2>
+                                <p class="text-muted">Configure your new dashboard and layout.</p>
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 36px;">
+                                <button class="btn btn-secondary"
+                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Save
+                                    Draft</button>
+                                <button class="btn btn-primary"
+                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Publish</button>
+                            </div>
+                        </div>
+
+                        <div
+                            style="padding: var(--spacing-4); display: flex; flex-direction: column; gap: 24px; max-width: 800px;">
+                            <!-- Form Fields -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Dashboard Name <span
+                                            style="color: var(--color-error);">*</span></label>
+                                    <input type="text" placeholder="e.g. Defect Trend Dashboard"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Description</label>
+                                    <textarea placeholder="Monthly defect trend analysis with..." rows="3"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; resize: vertical;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'"></textarea>
+                                </div>
+
+                                <div style="display: flex; gap: 24px;">
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Category</label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option>Defects</option>
+                                            <option>Releases</option>
+                                            <option>Test Cases</option>
+                                            <option>Custom</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Visibility</label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option>All Users</option>
+                                            <option>Admin Only</option>
+                                            <option>Specific Roles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Drag List Area -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h3 style="margin: 0; font-size: 16px;">Charts <span class="text-muted"
+                                            style="font-size: 13px; font-weight: normal; margin-left: 8px;">(drag to
+                                            reorder)</span></h3>
+                                    <button class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 13px; display: flex; align-items: center; gap: 6px;"
+                                        onclick="openMockModal('Chart Builder')">
+                                        <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add Chart
+                                    </button>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                    <!-- Mock Drag Item 1 -->
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fafafa; border: 1px solid var(--border-color); border-radius: 6px; cursor: grab;">
+                                        <div style="display: flex; align-items: center; gap: 16px;">
+                                            <i data-lucide="grip-vertical" class="text-muted"
+                                                style="width: 16px; height: 16px; cursor: grab;"></i>
+                                            <div>
+                                                <div style="font-weight: 500;">Bar Chart: Defects/Mo</div>
+                                                <div class="text-muted" style="font-size: 12px;">WorkBench DB</div>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button class="icon-btn" title="Edit"><i data-lucide="edit-2"
+                                                    style="width: 16px; height: 16px;"></i></button>
+                                            <button class="icon-btn" title="Remove"
+                                                style="color: var(--color-error);"><i data-lucide="trash-2"
+                                                    style="width: 16px; height: 16px;"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mock Drag Item 2 -->
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fafafa; border: 1px solid var(--border-color); border-radius: 6px; cursor: grab;">
+                                        <div style="display: flex; align-items: center; gap: 16px;">
+                                            <i data-lucide="grip-vertical" class="text-muted"
+                                                style="width: 16px; height: 16px; cursor: grab;"></i>
+                                            <div>
+                                                <div style="font-weight: 500;">Pie Chart: Severity</div>
+                                                <div class="text-muted" style="font-size: 12px;">WorkBench DB</div>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button class="icon-btn" title="Edit"><i data-lucide="edit-2"
+                                                    style="width: 16px; height: 16px;"></i></button>
+                                            <button class="icon-btn" title="Remove"
+                                                style="color: var(--color-error);"><i data-lucide="trash-2"
+                                                    style="width: 16px; height: 16px;"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mock Drag Item 3 -->
+                                    <div
+                                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fafafa; border: 1px solid var(--border-color); border-radius: 6px; cursor: grab;">
+                                        <div style="display: flex; align-items: center; gap: 16px;">
+                                            <i data-lucide="grip-vertical" class="text-muted"
+                                                style="width: 16px; height: 16px; cursor: grab;"></i>
+                                            <div>
+                                                <div style="font-weight: 500;">Table: Defect Detail List</div>
+                                                <div class="text-muted" style="font-size: 12px;">WorkBench DB</div>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button class="icon-btn" title="Edit"><i data-lucide="edit-2"
+                                                    style="width: 16px; height: 16px;"></i></button>
+                                            <button class="icon-btn" title="Remove"
+                                                style="color: var(--color-error);"><i data-lucide="trash-2"
+                                                    style="width: 16px; height: 16px;"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Audit Logs -->
+                    <main class="view-container hidden" id="view-audit-logs">
+                        <div class="view-header">
+                            <h2>Audit Log Viewer (R14)</h2>
+                            <p class="text-muted">Enterprise compliance logs for all analytics interactions.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <div class="placeholder-text">Audit Log Table: Timestamp | User | Action | Resource ID |
+                                Status
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings Hub -->
+                    <main class="view-container hidden" id="view-settings-hub">
+                        <div class="view-header">
+                            <h2>Platform Settings</h2>
+                            <p class="text-muted">Centralized administration hub for your Pinnacle platform instance.
+                            </p>
+                        </div>
+                        <div
+                            style="padding: var(--spacing-4); display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+                            <!-- Settings Cards -->
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-licence\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="key"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Licence Management</h3>
+                                    <p class="text-muted" style="font-size: 14px;">View licence keys, seat counts, and
+                                        expiry
+                                        dates</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-roles\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="shield"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Roles & Permissions</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Manage user access across dashboards
+                                        and
+                                        tools</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-services\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="server"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Service Catalogue</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Platform services, SLAs, and
+                                        operational
+                                        status</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-projects\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="briefcase"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Project Management</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Multi-tenant project configuration
+                                        and
+                                        tracking</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-requests\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="life-buoy"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Service Request</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Submit and track incidents or access
+                                        requests
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Licence -->
+                    <main class="view-container hidden" id="view-settings-licence">
+                        <div class="view-header">
+                            <h2>Licence Management</h2>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <div class="placeholder-text">Licence Key: PNN-ENT-2026-X8Y2<br>Seats Used: 45 /
+                                50<br>Expiry: Dec
+                                31, 2026</div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Roles -->
+                    <main class="view-container hidden" id="view-settings-roles">
+                        <div class="view-header">
+                            <h2>Roles and Permissions</h2>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <div class="placeholder-text">Matrix Table: User Roles vs Action Permissions (View, Edit,
+                                Admin)
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Services -->
+                    <main class="view-container hidden" id="view-settings-services">
+                        <div class="view-header">
+                            <h2>Service Catalogue</h2>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <div class="placeholder-text">Available Services: Auth Engine (99.9% uptime), Superset
+                                Instance
+                                (99.8% uptime)</div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Projects -->
+                    <main class="view-container hidden" id="view-settings-projects">
+                        <div class="view-header">
+                            <h2>Project Management</h2>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <div class="placeholder-text">Active Projects: Florence Health, Staging Sandpit, Core QA
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Requests -->
+                    <main class="view-container hidden" id="view-settings-requests">
+                        <div class="view-header">
+                            <h2>Service Requests</h2>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <div class="placeholder-text">Ticket Queue: Pending Access Approvals, New Dashboard Requests
+                            </div>
+                        </div>
+                    </main>
+                </main> <!-- End pn-content -->
+            </div> <!-- End pn-body -->
+        </div> <!-- End screen-dashboard -->
+    </div> <!-- End app-container -->
+
+    <!-- MOCK MODAL -->
+    <div class="modal-overlay hidden" id="mock-modal-overlay"></div>
+    <div class="modal hidden" id="mock-modal">
+        <div class="modal-header">
+            <h3 id="mock-modal-title">Modal Title</h3>
+            <button class="icon-btn" onclick="closeMockModal()"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p>This is a placeholder for the administrative action.</p>
+            <p class="text-muted" style="margin-top: 12px; font-size: 13px;">Expected behavior is implemented in
+                production backend.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeMockModal()">Cancel</button>
+            <button class="btn btn-primary"
+                onclick="closeMockModal(); showToast('Action completed successfully');">Confirm Action</button>
+        </div>
+    </div>
+
+    <!-- Widget Gallery Drawer (for Edit Mode) -->
+    <div class="drawer-overlay hidden" id="drawer-overlay"></div>
+    <div class="widget-drawer hidden" id="widget-drawer">
+        <div class="drawer-header">
+            <h3>Widget Catalogue</h3>
+            <button class="icon-btn" id="close-drawer-btn"><i data-lucide="x"></i></button>
+        </div>
+        <div class="drawer-search">
+            <i data-lucide="search"></i><input type="text" placeholder="Search 60+ widgets...">
+        </div>
+        <div class="drawer-content">
+            <div class="widget-list" id="drawer-widget-list">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="toast hidden" id="toast">
+        <i data-lucide="check-circle" class="toast-icon"></i>
+        <span class="toast-message">Action successful</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app2.js"></script>
+</body>
+
+</html>
