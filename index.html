@@ -382,10 +382,7 @@
 
                             <div class="filter-group"
                                 style="margin-left: auto; flex-direction: row; align-items: center; gap: 12px;">
-                                <button id="toolbar-data-sources-btn" class="btn btn-secondary"
-                                    onclick="document.querySelector('.nav-item[data-view=\'data-sources\']').click()">
-                                    <i data-lucide="database"></i> Data Sources
-                                </button>
+
                                 <button id="customize-btn" class="btn btn-primary">
                                     <i data-lucide="edit-3"></i> Customise
                                 </button>
@@ -410,10 +407,349 @@
                                 </div>
                             </div>
 
-                            <div class="grid-stack" id="main-grid">
-                                <!-- Widgets dynamically loaded here -->
+
+                            <div id="mini-dashboard-container" style="display:none; padding: 20px;">
+                                <!-- Mini-Dashboard grouped sections -->
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                    <!-- Release -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Release</span><span class="ms-toggle">▼</span>
+                                        </div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Release Summary</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Active</div>
+                                                            <div class="circle-counter cc-blue">4</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Planned</div>
+                                                            <div class="circle-counter cc-blue">0</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Deployed</div>
+                                                            <div class="circle-counter cc-blue">11</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Execution</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Passed</div>
+                                                            <div class="circle-counter cc-green">142%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Failed</div>
+                                                            <div class="circle-counter cc-orange">0.25%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Not Run</div>
+                                                            <div class="circle-counter cc-blue">99.6%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Open Defects</div>
+                                                            <div class="circle-counter cc-red">1002</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- User Stories -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>User Stories</span><span class="ms-toggle">▼</span>
+                                        </div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Requirements Summary</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Draft</div>
+                                                            <div class="circle-counter cc-blue">112</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-green">11</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-blue">123</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Execution</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Passed</div>
+                                                            <div class="circle-counter cc-green">142%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Failed</div>
+                                                            <div class="circle-counter cc-orange">0.25%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Not Run</div>
+                                                            <div class="circle-counter cc-blue">99.6%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Open Defects</div>
+                                                            <div class="circle-counter cc-red">681</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Workbench -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Workbench</span><span class="ms-toggle">▼</span>
+                                        </div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Priority</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">01-Gold</div>
+                                                            <div class="circle-counter cc-blue">58</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">02-Silver</div>
+                                                            <div class="circle-counter cc-blue">70</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">03-Bronze</div>
+                                                            <div class="circle-counter cc-blue">32</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-blue">160</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Status</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Draft</div>
+                                                            <div class="circle-counter cc-green">152</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-green">11</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-green">153</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">New/Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">New/Open</div>
+                                                            <div class="circle-counter cc-orange">71</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Enginuity Workbench -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Enginuity Workbench</span><span
+                                                class="ms-toggle">▼</span></div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Priority</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">01-Gold</div>
+                                                            <div class="circle-counter cc-blue">1087</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">02-Silver</div>
+                                                            <div class="circle-counter cc-blue">150</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">03-Bronze</div>
+                                                            <div class="circle-counter cc-blue">53</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-blue">1219</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Status</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Draft</div>
+                                                            <div class="circle-counter cc-green">1275</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-green">15</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-green">1290</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">New/Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">New/Open</div>
+                                                            <div class="circle-counter cc-orange">694</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Enginuity Batch -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Enginuity Batch</span><span
+                                                class="ms-toggle">▼</span></div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Batch Status</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Configuring</div>
+                                                            <div class="circle-counter cc-blue">63</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Scheduling</div>
+                                                            <div class="circle-counter cc-blue">13</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-blue">0</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Completed</div>
+                                                            <div class="circle-counter cc-blue">198</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-orange">1241</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Execution</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Tests</div>
+                                                            <div class="circle-counter cc-green">4452</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Test Steps</div>
+                                                            <div class="circle-counter cc-green">80388</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Defect -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Defect</span><span class="ms-toggle">▼</span></div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Avg Residual Risk</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Avg Residual Risk</div>
+                                                            <div class="circle-counter cc-red">3373</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Avg Days</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">All Defects</div>
+                                                            <div class="circle-counter cc-red-fill">19733</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Open Defects</div>
+                                                            <div class="circle-counter cc-red-fill">79814</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Since Activity</div>
+                                                            <div class="circle-counter cc-red-fill">119.65</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Bounce & Reopen</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total Bounce</div>
+                                                            <div class="circle-counter cc-red-fill">33</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total ReOpen</div>
+                                                            <div class="circle-counter cc-red-fill">82</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Severity 1 & 2</div>
+                                                            <div class="circle-counter cc-red-fill">1901</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Other Severities</div>
+                                                            <div class="circle-counter cc-red-fill">272</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+
+
+
+
+
+
+
+
+                            <!-- ==================== SCREEN 3F: Fullscreen Mode ==================== -->
+                            <div </div>
+                                <div class="grid-stack" id="main-grid">
+                                    <!-- Widgets dynamically loaded here -->
+                                </div>
+                            </div>
                     </main>
 
                     <!-- VIEW: SQL Lab -->
@@ -488,7 +824,7 @@
                         </div>
                         <div style="padding: var(--spacing-4);">
                             <button class="btn btn-primary" style="margin-bottom: var(--spacing-3);"
-                                onclick="openMockModal('New Data Source')">
+                                onclick="document.getElementById('add-datasource-modal').classList.remove('hidden')">
                                 <i data-lucide="plus"></i> Add Data Source
                             </button>
                             <table class="data-table">
@@ -546,6 +882,72 @@
                                                     data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>QM Factory</td>
+                                        <td>PostgreSQL</td>
+                                        <td>db-qmf-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
+                                        </td>
+                                        <td>210</td>
+                                        <td>
+                                            <button class="icon-btn" title="Test Connection"
+                                                onclick="showToast('✅ Connection Successful')"><i
+                                                    data-lucide="plug"></i></button>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit QM Factory Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Sync Tables"
+                                                onclick="showToast('🔄 Syncing Tables...')"><i
+                                                    data-lucide="refresh-cw"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete QM Factory Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enginuity</td>
+                                        <td>MySQL</td>
+                                        <td>db-eng-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
+                                        </td>
+                                        <td>85</td>
+                                        <td>
+                                            <button class="icon-btn" title="Test Connection"
+                                                onclick="showToast('✅ Connection Successful')"><i
+                                                    data-lucide="plug"></i></button>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit Enginuity Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Sync Tables"
+                                                onclick="showToast('🔄 Syncing Tables...')"><i
+                                                    data-lucide="refresh-cw"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Enginuity Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Authorise</td>
+                                        <td>MS SQL Server</td>
+                                        <td>sql-auth-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
+                                        </td>
+                                        <td>34</td>
+                                        <td>
+                                            <button class="icon-btn" title="Test Connection"
+                                                onclick="showToast('✅ Connection Successful')"><i
+                                                    data-lucide="plug"></i></button>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit Authorise Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Sync Tables"
+                                                onclick="showToast('🔄 Syncing Tables...')"><i
+                                                    data-lucide="refresh-cw"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Authorise Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -567,6 +969,7 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Owner</th>
+                                        <th>Type</th>
                                         <th>Chart Count</th>
                                         <th>Last Modified</th>
                                         <th>Status</th>
@@ -576,17 +979,15 @@
                                 <tbody>
                                     <tr>
                                         <td>Defect Trend</td>
-                                        <td>System</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
                                         <td>4</td>
                                         <td>2 hours ago</td>
-                                        <td><span class="badge badge-success" style="background:#43A047">Active</span>
-                                        </td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Configure Layout"
-                                                onclick="showToast('Navigating to Edit Mode...')"><i
-                                                    data-lucide="layout"></i></button>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="openMockModal('Edit Defect Trend Details')"><i
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Defect Trend Dashboard')"><i
@@ -594,21 +995,220 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Release Health (SD3)</td>
+                                        <td>Releases</td>
                                         <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>2</td>
+                                        <td>1 day ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Releases Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Test Cases</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>2</td>
+                                        <td>3 days ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Test Cases Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quadrants</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>1 week ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Quadrants Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Batches</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>3</td>
+                                        <td>2 weeks ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Batches Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mini-Dashboard</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>6</td>
+                                        <td>1 month ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Mini-Dashboard Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Defect Lifecycle</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>5</td>
+                                        <td>2 hours ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Defect Lifecycle Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Test Execution Health</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>5 hours ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Test Execution Health Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Release Health</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
                                         <td>4</td>
                                         <td>1 day ago</td>
-                                        <td><span class="badge badge-success" style="background:#43A047">Active</span>
-                                        </td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Configure Layout"
-                                                onclick="showToast('Navigating to Edit Mode...')"><i
-                                                    data-lucide="layout"></i></button>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="openMockModal('Edit Release Health Details')"><i
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Release Health Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Requirement Traceability</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>2 days ago</td>
+                                        <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Requirement Traceability Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Test Case Quality</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>3 days ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Test Case Quality Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Productivity</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>4 days ago</td>
+                                        <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete User Productivity Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Batch Scheduling</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>5 days ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Batch Scheduling Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Root Cause Analysis</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>6 days ago</td>
+                                        <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Root Cause Analysis Dashboard')"><i
                                                     data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
@@ -653,7 +1253,8 @@
                                 </div>
 
                                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <label style="font-weight: 500; color: var(--text-color);">Description</label>
+                                    <label style="font-weight: 500; color: var(--text-color);">Description <span
+                                            style="color: var(--color-error);">*</span></label>
                                     <textarea placeholder="Monthly defect trend analysis with..." rows="3"
                                         style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; resize: vertical;"
                                         onfocus="this.style.borderColor='var(--color-primary)'"
@@ -662,7 +1263,8 @@
 
                                 <div style="display: flex; gap: 24px;">
                                     <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
-                                        <label style="font-weight: 500; color: var(--text-color);">Category</label>
+                                        <label style="font-weight: 500; color: var(--text-color);">Type <span
+                                                style="color: var(--color-error);">*</span></label>
                                         <select
                                             style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
                                             <option>Defects</option>
@@ -672,7 +1274,8 @@
                                         </select>
                                     </div>
                                     <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
-                                        <label style="font-weight: 500; color: var(--text-color);">Visibility</label>
+                                        <label style="font-weight: 500; color: var(--text-color);">Visibility <span
+                                                style="color: var(--color-error);">*</span></label>
                                         <select
                                             style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
                                             <option>All Users</option>
@@ -683,80 +1286,118 @@
                                 </div>
                             </div>
 
-                            <!-- Charts Drag List Area -->
+                            <!-- Charts Grid Area -->
                             <div
-                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color); flex: 1; min-height: 400px;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <h3 style="margin: 0; font-size: 16px;">Charts <span class="text-muted"
-                                            style="font-size: 13px; font-weight: normal; margin-left: 8px;">(drag to
-                                            reorder)</span></h3>
+                                    <h3 style="margin: 0; font-size: 16px;">Charts <span
+                                            style="color: var(--color-error);">*</span> <span class="text-muted"
+                                            style="font-size: 13px; font-weight: normal; margin-left: 8px;">(12-column
+                                            grid, drag to resize/reorder)</span></h3>
                                     <button class="btn btn-secondary"
                                         style="padding: 6px 12px; font-size: 13px; display: flex; align-items: center; gap: 6px;"
-                                        onclick="openMockModal('Chart Builder')">
+                                        onclick="openAddChartModal()">
                                         <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add Chart
                                     </button>
                                 </div>
 
-                                <div style="display: flex; flex-direction: column; gap: 12px;">
-                                    <!-- Mock Drag Item 1 -->
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fafafa; border: 1px solid var(--border-color); border-radius: 6px; cursor: grab;">
-                                        <div style="display: flex; align-items: center; gap: 16px;">
-                                            <i data-lucide="grip-vertical" class="text-muted"
-                                                style="width: 16px; height: 16px; cursor: grab;"></i>
-                                            <div>
-                                                <div style="font-weight: 500;">Bar Chart: Defects/Mo</div>
-                                                <div class="text-muted" style="font-size: 12px;">WorkBench DB</div>
-                                            </div>
-                                        </div>
-                                        <div style="display: flex; gap: 8px;">
-                                            <button class="icon-btn" title="Edit"><i data-lucide="edit-2"
-                                                    style="width: 16px; height: 16px;"></i></button>
-                                            <button class="icon-btn" title="Remove"
-                                                style="color: var(--color-error);"><i data-lucide="trash-2"
-                                                    style="width: 16px; height: 16px;"></i></button>
-                                        </div>
-                                    </div>
+                                <div class="grid-stack"
+                                    style="background: #fafafa; border: 1px dashed var(--border-color); border-radius: 4px; min-height: 200px; padding: 10px;">
+                                    <!-- Dynamic Grid Items -->
+                                </div>
+                            </div>
+                        </div>
+                    </main>
 
-                                    <!-- Mock Drag Item 2 -->
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fafafa; border: 1px solid var(--border-color); border-radius: 6px; cursor: grab;">
-                                        <div style="display: flex; align-items: center; gap: 16px;">
-                                            <i data-lucide="grip-vertical" class="text-muted"
-                                                style="width: 16px; height: 16px; cursor: grab;"></i>
-                                            <div>
-                                                <div style="font-weight: 500;">Pie Chart: Severity</div>
-                                                <div class="text-muted" style="font-size: 12px;">WorkBench DB</div>
-                                            </div>
-                                        </div>
-                                        <div style="display: flex; gap: 8px;">
-                                            <button class="icon-btn" title="Edit"><i data-lucide="edit-2"
-                                                    style="width: 16px; height: 16px;"></i></button>
-                                            <button class="icon-btn" title="Remove"
-                                                style="color: var(--color-error);"><i data-lucide="trash-2"
-                                                    style="width: 16px; height: 16px;"></i></button>
-                                        </div>
-                                    </div>
+                    <!-- VIEW: Edit Dashboard -->
+                    <main class="view-container hidden" id="view-edit-dashboard">
+                        <div class="view-header"
+                            style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <button class="btn btn-secondary"
+                                    style="margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 8px;"
+                                    onclick="switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">
+                                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back
+                                </button>
+                                <h2>Edit Dashboard</h2>
+                                <p class="text-muted">Modify your dashboard settings and layout.</p>
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 36px;">
+                                <button class="btn btn-secondary"
+                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Save
+                                    Draft</button>
+                                <button class="btn btn-primary"
+                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Publish</button>
+                            </div>
+                        </div>
 
-                                    <!-- Mock Drag Item 3 -->
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #fafafa; border: 1px solid var(--border-color); border-radius: 6px; cursor: grab;">
-                                        <div style="display: flex; align-items: center; gap: 16px;">
-                                            <i data-lucide="grip-vertical" class="text-muted"
-                                                style="width: 16px; height: 16px; cursor: grab;"></i>
-                                            <div>
-                                                <div style="font-weight: 500;">Table: Defect Detail List</div>
-                                                <div class="text-muted" style="font-size: 12px;">WorkBench DB</div>
-                                            </div>
-                                        </div>
-                                        <div style="display: flex; gap: 8px;">
-                                            <button class="icon-btn" title="Edit"><i data-lucide="edit-2"
-                                                    style="width: 16px; height: 16px;"></i></button>
-                                            <button class="icon-btn" title="Remove"
-                                                style="color: var(--color-error);"><i data-lucide="trash-2"
-                                                    style="width: 16px; height: 16px;"></i></button>
-                                        </div>
+                        <div
+                            style="padding: var(--spacing-4); display: flex; flex-direction: column; gap: 24px; max-width: 800px;">
+                            <!-- Form Fields -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Dashboard Name <span
+                                            style="color: var(--color-error);">*</span></label>
+                                    <input type="text" placeholder="e.g. Defect Trend Dashboard"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Description <span
+                                            style="color: var(--color-error);">*</span></label>
+                                    <textarea placeholder="Monthly defect trend analysis with..." rows="3"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; resize: vertical;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'"></textarea>
+                                </div>
+
+                                <div style="display: flex; gap: 24px;">
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Type <span
+                                                style="color: var(--color-error);">*</span></label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option>Defects</option>
+                                            <option>Releases</option>
+                                            <option>Test Cases</option>
+                                            <option>Custom</option>
+                                        </select>
                                     </div>
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Visibility <span
+                                                style="color: var(--color-error);">*</span></label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option>All Users</option>
+                                            <option>Admin Only</option>
+                                            <option>Specific Roles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Grid Area -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color); flex: 1; min-height: 400px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h3 style="margin: 0; font-size: 16px;">Charts <span
+                                            style="color: var(--color-error);">*</span> <span class="text-muted"
+                                            style="font-size: 13px; font-weight: normal; margin-left: 8px;">(12-column
+                                            grid,
+                                            drag to resize/reorder)</span></h3>
+                                    <button class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 13px; display: flex; align-items: center; gap: 6px;"
+                                        onclick="openAddChartModal()">
+                                        <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add Chart
+                                    </button>
+                                </div>
+
+                                <div class="grid-stack"
+                                    style="background: #fafafa; border: 1px dashed var(--border-color); border-radius: 4px; min-height: 200px; padding: 10px;">
+                                    <!-- Dynamic Grid Items -->
                                 </div>
                             </div>
                         </div>
@@ -948,6 +1589,317 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app2.js"></script>
+
+    <!-- Add Chart Modal -->
+    <div class="modal-overlay hidden" id="add-chart-modal">
+        <div class="modal" style="width: 700px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">Add Chart Configuration</h3>
+                <button class="icon-btn" onclick="document.getElementById('add-chart-modal').classList.add('hidden')"><i
+                        data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 20px;">
+
+                <!-- Data Source Section -->
+                <div
+                    style="background: #fafafa; padding: 16px; border: 1px solid var(--border-color); border-radius: 6px;">
+                    <h4 style="margin: 0 0 12px 0; font-size: 14px; color: var(--color-primary);">1. Data Source</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 500;">Database</label>
+                            <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                <option>WorkBench</option>
+                                <option>AutomationOR</option>
+                                <option>QM Factory</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 500;">Schema</label>
+                            <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                <option>public</option>
+                                <option>dbo</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 500;">Table</label>
+                            <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                <option>defects_summary</option>
+                                <option>test_executions</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualization Type -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-weight: 500;">2. Chart Type <span
+                            style="color: var(--color-error);">*</span></label>
+                    <select id="chart-type-selector" onchange="updateChartConfigFields()"
+                        style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); width: 100%; max-width: 300px;">
+                        <option value="pie">Pie Chart</option>
+                        <option value="bar">Bar Chart</option>
+                        <option value="table">Table</option>
+                        <option value="line">Line Chart</option>
+                    </select>
+                </div>
+
+                <!-- Configuration Fields (Dynamic) -->
+                <div
+                    style="background: #fafafa; padding: 16px; border: 1px solid var(--border-color); border-radius: 6px;">
+                    <h4 style="margin: 0 0 12px 0; font-size: 14px; color: var(--color-primary);">3. Query Configuration
+                    </h4>
+
+                    <div id="config-pie" class="chart-config-section">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                    <option>created_at</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metric <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>COUNT(id)</option>
+                                    <option>SUM(cost)</option>
+                                    <option>AVG(resolution_time)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Filters</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>status = 'Open'</option>
+                                    <option>severity = 'Sev 1'</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Row Limit</label>
+                                <input type="number" value="100"
+                                    style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="config-bar" class="chart-config-section hidden">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">X-Axis <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>created_at</option>
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metrics <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>SUM(cost)</option>
+                                    <option>COUNT(id)</option>
+                                    <option>AVG(resolution_time)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions (Group By)</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Filters</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>status = 'Open'</option>
+                                    <option>severity = 'Sev 1'</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="config-table" class="chart-config-section hidden">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Query Mode <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>Aggregate</option>
+                                    <option>Raw Records</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions</label>
+                                <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);"
+                                    multiple>
+                                    <option selected>Severity</option>
+                                    <option selected>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                    <option>created_at</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metrics</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>COUNT(id)</option>
+                                    <option>SUM(cost)</option>
+                                    <option>AVG(resolution_time)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Filters</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>status = 'Open'</option>
+                                    <option>severity = 'Sev 1'</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="config-line" class="chart-config-section hidden">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">X-Axis (Time) <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>created_at</option>
+                                    <option>resolved_at</option>
+                                    <option>updated_at</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metrics <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>AVG(resolution_time)</option>
+                                    <option>COUNT(id)</option>
+                                    <option>SUM(cost)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Basic Meta -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-weight: 500;">Chart Name <span
+                            style="color: var(--color-error);">*</span></label>
+                    <input type="text" id="add-chart-name" placeholder="e.g. Defect Trend by Severity"
+                        style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('add-chart-modal').classList.add('hidden')">Cancel</button>
+                <button class="btn btn-primary" onclick="addChartToGrid()">Save Chart</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Data Source Modal -->
+    <div class="modal-overlay hidden" id="add-datasource-modal">
+        <div class="modal" style="width: 500px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">Add Data Source</h3>
+                <button class="icon-btn"
+                    onclick="document.getElementById('add-datasource-modal').classList.add('hidden')"><i
+                        data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Display Name <span
+                            style="color: var(--color-error);">*</span></label>
+                    <input type="text" placeholder="e.g. WorkBench Prod"
+                        style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Database Type <span
+                            style="color: var(--color-error);">*</span></label>
+                    <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                        <option>PostgreSQL</option>
+                        <option>MySQL</option>
+                        <option>MS SQL Server</option>
+                        <option>Oracle</option>
+                    </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Host <span
+                                style="color: var(--color-error);">*</span></label>
+                        <input type="text" placeholder="e.g. db.internal.com"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Port</label>
+                        <input type="number" placeholder="5432"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Username</label>
+                        <input type="text"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Password</label>
+                        <input type="password"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('add-datasource-modal').classList.add('hidden')">Cancel</button>
+                <button class="btn btn-primary"
+                    onclick="document.getElementById('add-datasource-modal').classList.add('hidden'); showToast('Data Source added successfully')">Save</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

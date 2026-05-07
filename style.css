@@ -942,8 +942,9 @@ body.edit-mode .remove-widget-btn {
 /* Toast */
 .toast {
     position: fixed;
-    bottom: var(--spacing-4);
-    right: var(--spacing-4);
+    top: var(--spacing-4);
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #333;
     color: white;
     padding: 12px 24px;
@@ -1403,3 +1404,22 @@ body.edit-mode .remove-widget-btn {
 
 /* --- MAIN CONTENT IFRAME --- */
 .pn-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+
+/* Mini-Dashboard CSS added */
+.circle-counter { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; background: transparent; }
+.circle-counter.cc-blue { border: 2.5px solid #1890ff; color: #1890ff; }
+.circle-counter.cc-green { border: 2.5px solid #52c41a; color: #52c41a; }
+.circle-counter.cc-orange { border: 2.5px solid #faad14; color: #faad14; }
+.circle-counter.cc-red { border: 2.5px solid #ff4d4f; color: #ff4d4f; }
+.circle-counter.cc-red-fill { border: 2.5px solid #ff4d4f; background: #ff4d4f; color: #fff; }
+.mini-section { background: #fff; border: 1px solid #e8e8e8; border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+.mini-section .ms-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--color-primary); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+.mini-section .ms-header .ms-toggle { font-size: 11px; }
+.mini-section .ms-body { padding: 12px 16px; }
+.mini-section .ms-groups { display: flex; gap: 20px; flex-wrap: nowrap; overflow-x: auto; }
+.mini-section .ms-group { flex: 1; min-width: 200px; }
+.mini-section .ms-group-title { font-size: 11px; font-weight: 600; color: var(--color-primary); text-align: center; margin-bottom: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 4px; }
+.mini-section .ms-counters { display: flex; gap: 8px; justify-content: center; flex-wrap: nowrap; overflow-x: auto; }
+.mini-counter { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.mini-counter .mc-label { font-size: 9px; color: var(--color-text-muted); text-align: center; max-width: 65px; line-height: 1.2; }
+.mini-counter .circle-counter { width: 34px; height: 34px; font-size: 10px; border-width: 2px; }
