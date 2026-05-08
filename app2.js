@@ -40,6 +40,47 @@ function createWidgetContent(title, desc, chartType = 'bar', chartKey = '') {
                 <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 60px; font-size: 11px; color: #555;">Sprint 2</span><div style="flex: 1; height: 12px; background: #f0f0f0; border-radius: 6px; position: relative;"><div style="position: absolute; left: 40%; width: 35%; height: 100%; background: #52c41a; border-radius: 6px;"></div></div></div>
                 <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 60px; font-size: 11px; color: #555;">Sprint 3</span><div style="flex: 1; height: 12px; background: #f0f0f0; border-radius: 6px; position: relative;"><div style="position: absolute; left: 70%; width: 20%; height: 100%; background: #faad14; border-radius: 6px;"></div></div></div>
             </div>`;
+    } else if (chartType === 'circle-kpi') {
+        const numCircles = parseInt(chartKey) || 4;
+        let circlesHtml = '';
+        const colors = ['#e53935', '#43a047', '#ffb300', '#1e3a8a', '#8e24aa', '#e91e63'];
+        for (let i = 0; i < numCircles; i++) {
+            const color = colors[i % colors.length];
+            circlesHtml += `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                    <div style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: ${color}20; color: ${color}; border: 2px solid ${color}; font-weight: 600; font-size: 14px;">
+                        ${Math.floor(Math.random() * 50) + 1}
+                    </div>
+                    <div style="font-size: 10px; color: #8c8c8c; text-align: center; white-space: nowrap; max-width: 50px; overflow: hidden; text-overflow: ellipsis;">KPI ${i + 1}</div>
+                </div>
+            `;
+        }
+        contentHtml = `
+            <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; flex-wrap: wrap; align-content: center; gap: 8px; overflow: hidden; padding: 4px;">
+                ${circlesHtml}
+            </div>`;
+    } else if (chartType === 'gauge') {
+        contentHtml = `
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; position: relative;">
+                <svg viewBox="0 0 100 50" style="width: 100%; max-width: 120px; overflow: visible;">
+                    <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e0e0e0" stroke-width="12" stroke-linecap="round"></path>
+                    <path d="M 10 50 A 40 40 0 0 1 70 20" fill="none" stroke="#e53935" stroke-width="12" stroke-linecap="round"></path>
+                </svg>
+                <div style="position: absolute; bottom: -5px; font-size: 20px; font-weight: 600; color: #e53935;">75%</div>
+            </div>`;
+    } else if (chartType === 'box-plot') {
+        contentHtml = `
+            <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; padding: 10px; width: 100%;">
+                ${[1, 2, 3].map(i => `
+                    <div style="position: relative; width: 24px; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="width: 2px; height: 80%; background-color: #8c8c8c; position: absolute;"></div>
+                        <div style="width: 16px; height: 40%; background-color: #1890ff80; border: 1px solid #1890ff; position: absolute; top: ${10 + i * 15}%;">
+                            <div style="width: 100%; height: 2px; background-color: #032772; position: absolute; top: 50%;"></div>
+                        </div>
+                        <div style="position: absolute; bottom: -15px; font-size: 10px; color: #8c8c8c;">Grp ${i}</div>
+                    </div>
+                `).join('')}
+            </div>`;
     } else {
         contentHtml = `<canvas class="mock-chart" data-type="${chartType}" data-key="${chartKey}"></canvas>`;
     }
@@ -67,8 +108,8 @@ const dashboardConfigs = {
         widgets: [
             { x: 0, y: 0, w: 4, h: 4, content: createWidgetContent('Defect Workflow', 'Distribution across lifecycle stages', 'doughnut', 'chart-donut') },
             { x: 4, y: 0, w: 8, h: 4, content: createWidgetContent('Severity Trend', 'Monthly defect count by severity', 'stacked-bar', 'chart-bar') },
-            { x: 0, y: 4, w: 8, h: 2, content: createWidgetContent('Exception Categories', '6 specific defect categories needing attention', 'kpi', 'exception-categories') },
-            { x: 8, y: 4, w: 4, h: 2, content: createWidgetContent('Risk Scores', 'Total and average risk scores', 'kpi', 'risk-scores') }
+            { x: 0, y: 4, w: 8, h: 2, content: createWidgetContent('Exception Categories', '6 specific defect categories needing attention', 'circle-kpi', '6') },
+            { x: 8, y: 4, w: 4, h: 2, content: createWidgetContent('Risk Scores', 'Total and average risk scores', 'circle-kpi', '2') }
         ]
     },
     'releases': {
@@ -76,7 +117,7 @@ const dashboardConfigs = {
         desc: 'Track release lifecycle status and identify bottlenecks.',
         widgets: [
             { x: 0, y: 0, w: 6, h: 4, content: createWidgetContent('Release Workflow', 'Releases by stage: Draft to Deployed', 'doughnut', 'chart-release-wf') },
-            { x: 6, y: 0, w: 6, h: 4, content: createWidgetContent('Key Metrics', 'Total releases, approved %, deployed %', 'kpi', 'release-metrics') }
+            { x: 6, y: 0, w: 6, h: 4, content: createWidgetContent('Key Metrics', 'Total releases, approved %, deployed %', 'circle-kpi', '4') }
         ]
     },
     'test-cases': {
@@ -84,7 +125,8 @@ const dashboardConfigs = {
         desc: 'Overview of test case inventory and execution readiness.',
         widgets: [
             { x: 0, y: 0, w: 6, h: 4, content: createWidgetContent('TC Workflow', 'Test cases by stage', 'doughnut', 'chart-tc-wf') },
-            { x: 6, y: 0, w: 6, h: 4, content: createWidgetContent('Execution Readiness', 'Automation ratio, pass rate, blocked', 'kpi', 'execution-metrics') }
+            { x: 6, y: 0, w: 3, h: 4, content: createWidgetContent('Custom Metrics', 'Key execution metrics', 'circle-kpi', '3') },
+            { x: 9, y: 0, w: 3, h: 4, content: createWidgetContent('Exceptions', 'Blocked and failed test cases', 'circle-kpi', '2') }
         ]
     },
     'quadrants': {
@@ -103,7 +145,7 @@ const dashboardConfigs = {
         widgets: [
             { x: 0, y: 0, w: 4, h: 4, content: createWidgetContent('Batch Workflow', 'Batches by stage', 'doughnut', 'chart-batch-wf') },
             { x: 4, y: 0, w: 8, h: 4, content: createWidgetContent('Daily Frequency', 'Tests executed per day', 'bar', 'chart-batch-freq') },
-            { x: 0, y: 4, w: 12, h: 2, content: createWidgetContent('Exceptions', 'Failed batches, timeout count, retry rate', 'kpi', 'batch-exceptions') }
+            { x: 0, y: 4, w: 12, h: 2, content: createWidgetContent('Exceptions', 'Failed batches, timeout count, retry rate', 'circle-kpi', '5') }
         ]
     },
     'mini': {
@@ -120,15 +162,16 @@ const dashboardConfigs = {
     },
     // SUGGESTED DASHBOARDS
     'sd1': {
-        title: 'Defect Lifecycle',
+        title: 'Defect Lifecycle Analytics',
         desc: 'End-to-end defect lifecycle analysis, timing, and SLA compliance.',
         isNew: true,
         widgets: [
-            { x: 0, y: 0, w: 6, h: 4, content: createWidgetContent('Time-to-Close', 'Distribution of resolution times', 'bar', 'sd1-chart1') },
-            { x: 6, y: 0, w: 6, h: 4, content: createWidgetContent('Age by Severity', 'Oldest open defects', 'stacked-bar', 'chart-bar') },
-            { x: 0, y: 4, w: 4, h: 3, content: createWidgetContent('SLA Breach', 'Percentage exceeding SLA', 'table', 'sla-table') },
-            { x: 4, y: 4, w: 4, h: 3, content: createWidgetContent('Severity x Priority', 'Heatmap of critical combinations', 'heatmap', 'sev-heatmap') },
-            { x: 8, y: 4, w: 4, h: 3, content: createWidgetContent('Reopen Rate', 'Monthly reopen trend', 'line', 'sd1-chart2') }
+            { x: 0, y: 0, w: 6, h: 4, content: createWidgetContent('Time-to-Close Distribution', 'Distribution of resolution times', 'bar', 'sd1-chart1') },
+            { x: 6, y: 0, w: 6, h: 4, content: createWidgetContent('Age Distribution by Severity', 'Oldest open defects', 'stacked-bar', 'chart-bar') },
+            { x: 0, y: 4, w: 4, h: 3, content: createWidgetContent('SLA Breach Tracking', 'Percentage exceeding SLA', 'gauge', 'sla-table') },
+            { x: 4, y: 4, w: 4, h: 3, content: createWidgetContent('Severity × Priority Heatmap', 'Heatmap of critical combinations', 'heatmap', 'sev-heatmap') },
+            { x: 8, y: 4, w: 4, h: 3, content: createWidgetContent('Reopen Rate Trend', 'Monthly reopen trend', 'line', 'sd1-chart2') },
+            { x: 0, y: 7, w: 12, h: 3, content: createWidgetContent('Risk Score Distribution', 'Statistical distribution of calculated risk scores', 'box-plot', 'risk-boxplot') }
         ]
     },
     'sd2': {
@@ -137,9 +180,10 @@ const dashboardConfigs = {
         isNew: true,
         widgets: [
             { x: 0, y: 0, w: 8, h: 4, content: createWidgetContent('Pass Rate Trend', 'Monthly pass/fail/blocked %', 'line', 'sd2-chart1') },
-            { x: 8, y: 0, w: 4, h: 4, content: createWidgetContent('Completion Rate', 'Coverage of high-priority tests', 'doughnut', 'sd4-chart1') },
-            { x: 0, y: 4, w: 6, h: 4, content: createWidgetContent('Execution Duration', 'Avg time by test suite', 'bar', 'sd1-chart1') },
-            { x: 6, y: 4, w: 6, h: 4, content: createWidgetContent('Blocked Test Cases', 'List of blocked TCs and reasons', 'table', 'blocked-tc') }
+            { x: 8, y: 0, w: 4, h: 4, content: createWidgetContent('Execution Duration Analysis', 'Avg time by test suite', 'bar', 'sd1-chart1') },
+            { x: 0, y: 4, w: 4, h: 4, content: createWidgetContent('Blocked Test Cases', 'List of blocked TCs and reasons', 'table', 'blocked-tc') },
+            { x: 4, y: 4, w: 4, h: 4, content: createWidgetContent('Test Step Completion', 'Steps passed vs failed vs skipped', 'stacked-bar', 'step-completion') },
+            { x: 8, y: 4, w: 4, h: 4, content: createWidgetContent('Completion Rate by Priority', 'Coverage of high-priority tests', 'doughnut', 'sd4-chart1') }
         ]
     },
     'sd3': {
@@ -159,9 +203,9 @@ const dashboardConfigs = {
         isNew: true,
         widgets: [
             { x: 0, y: 0, w: 8, h: 4, content: createWidgetContent('Coverage Gap Analysis', 'Requirements with 0 test cases', 'bar', 'sd3-chart1') },
-            { x: 8, y: 0, w: 4, h: 4, content: createWidgetContent('ISO Classification', 'Requirements by standard', 'doughnut', 'sd4-chart1') },
-            { x: 0, y: 4, w: 8, h: 4, content: createWidgetContent('Business Importance Matrix', 'Importance x Coverage heatmap', 'scatter', 'sd4-chart3') },
-            { x: 8, y: 4, w: 4, h: 4, content: createWidgetContent('Summary KPIs', 'Total reqs, covered %, average TC/req', 'kpi', 'req-kpi') }
+            { x: 8, y: 0, w: 4, h: 4, content: createWidgetContent('ISO Classification Breakdown', 'Requirements by standard', 'doughnut', 'sd4-chart1') },
+            { x: 0, y: 4, w: 8, h: 4, content: createWidgetContent('Business Importance Matrix', 'Importance x Coverage heatmap', 'heatmap', 'sd4-chart3') },
+            { x: 8, y: 4, w: 4, h: 4, content: createWidgetContent('Traceability Summary', 'Total reqs, covered %, average TC/req', 'circle-kpi', '4') }
         ]
     },
     'sd5': {
@@ -170,7 +214,7 @@ const dashboardConfigs = {
         isNew: true,
         widgets: [
             { x: 0, y: 0, w: 4, h: 4, content: createWidgetContent('Automation Ratio', 'Manual vs Automated', 'doughnut', 'sd5-chart1') },
-            { x: 4, y: 0, w: 8, h: 4, content: createWidgetContent('Growth Trend', 'Monthly test case creation', 'line', 'sd5-chart4') },
+            { x: 4, y: 0, w: 8, h: 4, content: createWidgetContent('Growth Trend', 'Monthly test case creation rate', 'area', 'sd5-chart4') },
             { x: 0, y: 4, w: 6, h: 4, content: createWidgetContent('Complexity Distribution', 'Test cases by step count', 'bar', 'sd5-chart3') },
             { x: 6, y: 4, w: 6, h: 4, content: createWidgetContent('Execution Readiness', 'Status per process area', 'stacked-bar', 'sd5-chart2') }
         ]
@@ -192,9 +236,9 @@ const dashboardConfigs = {
         isNew: true,
         widgets: [
             { x: 0, y: 0, w: 8, h: 4, content: createWidgetContent('Pipeline Throughput', 'Batches completed per week', 'line', 'sd2-chart1') },
-            { x: 8, y: 0, w: 4, h: 4, content: createWidgetContent('Virtual Worker', 'VW usage over time', 'line', 'sd1-chart2') },
-            { x: 0, y: 4, w: 6, h: 4, content: createWidgetContent('Failure Patterns', 'Reasons categorized', 'bar', 'sd3-chart1') },
-            { x: 6, y: 4, w: 6, h: 4, content: createWidgetContent('Duration Accuracy', 'Estimated vs Actual time', 'bar', 'sd7-chart1') }
+            { x: 8, y: 0, w: 4, h: 4, content: createWidgetContent('Virtual Worker Utilisation', 'VW usage over time', 'area', 'sd1-chart2') },
+            { x: 0, y: 4, w: 6, h: 4, content: createWidgetContent('Failure Pattern Analysis', 'Reasons categorized', 'bar', 'sd3-chart1') },
+            { x: 6, y: 4, w: 6, h: 4, content: createWidgetContent('Duration Accuracy', 'Estimated vs Actual time', 'scatter', 'sd7-chart1') }
         ]
     },
     'sd8': {
@@ -361,8 +405,6 @@ const sidebarDashboardsList = document.getElementById('sidebar-dashboards-list')
 Object.entries(dashboardConfigs).forEach(([id, config]) => {
     const itemHtml = `
         <a href="#" class="submenu-item" data-dashboard-id="${id}">
-            <span class="tree-line"></span>
-            <span class="tree-bullet"></span>
             ${config.title}
         </a>`;
     sidebarDashboardsList.innerHTML += itemHtml;

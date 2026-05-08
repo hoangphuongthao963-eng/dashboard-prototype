@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinnacle Dashboard Prototype</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
+    <link rel="stylesheet" href="style.css">
+    
+    <style id="theme-overrides">
+        /* Global Overrides */
+        :root {
+            --font-family: 'Raleway', sans-serif;
+            --color-primary: #032772;
+            --color-primary-hover: #0d398f;
+            --color-sidebar-bg: #002060;
+            --color-bg-app: #f4f7f9;
+            --border-radius: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        
+        body {
+            background-color: var(--color-bg-app);
+            font-family: var(--font-family);
+        }
+
+        h1, h2, h3, h4, h5, h6, .view-header h2, .auth-title {
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background: var(--color-primary) !important;
+            box-shadow: var(--shadow-sm);
+            color: #fff !important;
+        }
+        .btn-primary:hover {
+            background: var(--color-primary-hover) !important;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-secondary {
+            background: #f2f2f2 !important;
+            border: 1px solid #cfcfcf !important;
+            color: #202124 !important;
+        }
+        .btn-secondary:hover {
+            background: #f8f8f8 !important;
+        }
+
+        /* Data Table */
+        .data-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            background: #fff;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #eef0f4;
+        }
+        .data-table th, .data-table td {
+            border-right: none;
+            border-left: none;
+            border-bottom: 1px solid #eef0f4;
+            padding: 12px 16px;
+        }
+        .data-table th {
+            background: #fcfcfc;
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7280;
+        }
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        .data-table tbody tr:hover td {
+            background: #f9fafb;
+        }
+        
+        /* Layout & Header */
+        .pn-header {
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .pn-env-label {
+            font-family: 'Poppins', sans-serif;
+            color: #64bfe8;
+            font-weight: 600;
+        }
+        .sidebar {
+            background: var(--color-sidebar-bg) !important;
+        }
+        .nav-item.active {
+            background: rgba(255,255,255,0.15) !important;
+            color: #fff !important;
+            font-weight: 600;
+            border-left: none !important;
+            border-radius: 6px;
+            margin: 0 8px;
+            width: calc(100% - 16px);
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.08) !important;
+            border-radius: 6px;
+            margin: 0 8px;
+            width: calc(100% - 16px);
+            border-left: none !important;
+        }
+
+        .submenu-item.active {
+            background: rgba(255,255,255,0.15) !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            border-left: none !important;
+        }
+        .submenu-item:hover {
+            background: rgba(255,255,255,0.08) !important;
+            color: #fff !important;
+        }
+
+        /* Dashboard Grid Items */
+        .grid-stack-item-content {
+            border-radius: 12px !important;
+            border: 1px solid #f0f0f0 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+            background: #fff !important;
+            transition: box-shadow 0.2s;
+        }
+        .grid-stack-item-content:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+        }
+        
+        /* Modals */
+        .modal {
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: none;
+        }
+
+        /* Widget Labels */
+        .mc-label, .ms-group-title, .widget-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Authentication Flow -->
+    <div id="auth-container">
+        <!-- ============================================================
+             SCREEN 1: LOGIN
+        ============================================================ -->
+        <div id="view-login" class="pn-screen auth-screen active">
+            <div class="auth-card">
+                <img class="auth-brand-top" src="https://dashboard-prototype-eta.vercel.app/assets/logo.png"
+                    alt="Pinnacle">
+                <img class="auth-brand-bottom" src="https://dashboard-prototype-eta.vercel.app/assets/Footer.png"
+                    alt="">
+                <div class="auth-card-body">
+                    <div class="auth-title">Welcome</div>
+                    <div class="auth-subtitle">Please enter your contact details to connect.</div>
+                    <div class="auth-form-group">
+                        <label for="login-email"><span class="auth-required">*</span>Email</label>
+                        <input id="login-email" class="auth-input" type="email" placeholder="Enter your email"
+                            value="ian.charlton@pinnacleqm.com">
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="login-password"><span class="auth-required">*</span>Password</label>
+                        <input id="login-password" class="auth-input" type="password" placeholder="Enter your password"
+                            value="••••••••">
+                    </div>
+                    <div class="auth-form-row">
+                        <button class="auth-forgot"
+                            onclick="alert('Please contact your administrator to reset your password.')">Forgot
+                            password</button>
+                    </div>
+                    <button class="auth-btn" id="btn-sign-in">Sign in</button>
+                </div>
+                <div class="auth-copyright">© Copyright PinnacleQM 2014 - 2026. All Rights Reserved</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SCREEN 2: PRODUCT SELECTION
+        ============================================================ -->
+        <div id="view-product" class="pn-screen auth-screen">
+            <div class="auth-card">
+                <img class="auth-brand-top" src="https://dashboard-prototype-eta.vercel.app/assets/logo.png"
+                    alt="Pinnacle">
+                <img class="auth-brand-bottom" src="https://dashboard-prototype-eta.vercel.app/assets/Footer.png"
+                    alt="">
+                <div class="auth-card-body">
+                    <div class="auth-title">Products Selection</div>
+                    <div class="auth-subtitle">Please select the Products that you will use.</div>
+                    <div class="product-grid">
+                        <div class="product-card active" id="prod-qmf" data-product="QMF">
+                            <img src="https://dashboard-prototype-eta.vercel.app/assets/qmfactory-active.png"
+                                id="prod-img-qmf" alt="QMFactory">
+                        </div>
+                        <div class="product-card active" id="prod-eng" data-product="ENG">
+                            <img src="https://dashboard-prototype-eta.vercel.app/assets/enginuity-active.png"
+                                id="prod-img-eng" alt="Enginuity">
+                        </div>
+                        <div class="product-card active" id="prod-auth" data-product="AUTH">
+                            <img src="https://dashboard-prototype-eta.vercel.app/assets/authorise-active.png"
+                                id="prod-img-auth" alt="Authorise">
+                        </div>
+                    </div>
+                    <div class="product-helper-text">You will be an active user for the chosen Products from your
+                        licence until the end of your session</div>
+                    <div class="product-btn-group">
+                        <button class="auth-btn" id="btn-continue">Continue</button>
+                        <button class="auth-btn-secondary" id="btn-logout">Log out</button>
+                    </div>
+                </div>
+                <div class="auth-copyright">© Copyright PinnacleQM 2014 - 2026. All Rights Reserved</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Wrapper (Hidden initially) -->
+    <div id="app-container" class="hidden" style="width: 100%; height: 100%;">
+        <!-- SCREEN 3: DASHBOARD SHELL -->
+        <div id="screen-dashboard" style="display:flex; flex-direction:column; height:100vh; width:100%;">
+
+            <!-- HEADER -->
+            <header class="pn-header">
+                <div class="pn-header-left">
+                    <img class="pn-logo" src="https://dashboard-prototype-eta.vercel.app/assets/logo.png"
+                        alt="Pinnacle">
+                    <span class="pn-env-label">QA Environment</span>
+                    
+                </div>
+                <div class="pn-header-right">
+                    <!-- Info icon -->
+                    <svg class="pn-header-icon" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="opacity:0.5;cursor:not-allowed;">
+                        <path
+                            d="M3 15C3 16.58 3.31 18.14 3.91 19.59C4.52 21.05 5.4 22.37 6.51 23.49C7.63 24.6 8.95 25.48 10.41 26.09C11.86 26.69 13.42 27 15 27C16.58 27 18.14 26.69 19.59 26.09C21.05 25.48 22.37 24.6 23.49 23.49C24.6 22.37 25.48 21.05 26.09 19.59C26.69 18.14 27 16.58 27 15C27 11.82 25.74 8.77 23.49 6.51C21.23 4.26 18.18 3 15 3C11.82 3 8.77 4.26 6.51 6.51C4.26 8.77 3 11.82 3 15Z"
+                            stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M15 11.25H15.01" stroke="#292D32" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M14 15H15V20H16" stroke="#292D32" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <!-- Admin Functions -->
+                    <div class="pn-admin-wrapper" id="admin-wrapper">
+                        <svg class="pn-header-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            id="settings-btn" style="cursor:pointer;">
+                            <path
+                                d="M12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15Z"
+                                stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path
+                                d="M2 12.88V11.12C2 10.08 2.85 9.22 3.9 9.22C5.71 9.22 6.45 7.94 5.54 6.37C5.02 5.47 5.33 4.3 6.24 3.78L7.97 2.79C8.76 2.32 9.78 2.6 10.25 3.39L10.36 3.58C11.26 5.15 12.74 5.15 13.65 3.58L13.76 3.39C14.23 2.6 15.25 2.32 16.04 2.79L17.77 3.78C18.68 4.3 18.99 5.47 18.47 6.37C17.56 7.94 18.3 9.22 20.11 9.22C21.15 9.22 22.01 10.07 22.01 11.12V12.88C22.01 13.92 21.16 14.78 20.11 14.78C18.3 14.78 17.56 16.06 18.47 17.63C18.99 18.54 18.68 19.7 17.77 20.22L16.04 21.21C15.25 21.68 14.23 21.4 13.76 20.61L13.65 20.42C12.75 18.85 11.27 18.85 10.36 20.42L10.25 20.61C9.78 21.4 8.76 21.68 7.97 21.21L6.24 20.22C5.33 19.7 5.02 18.53 5.54 17.63C6.45 16.06 5.71 14.78 3.9 14.78C2.85 14.78 2 13.92 2 12.88Z"
+                                stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <div class="pn-admin-popover" id="settings-dropdown">
+                            <div class="dropdown-item pn-admin-item" data-view="settings-licence">Licence Management
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-roles">Roles and Permissions
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-services">Service Catalogue
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-projects">Project Management
+                            </div>
+                            <div class="dropdown-item pn-admin-item" data-view="settings-requests">Service Request</div>
+                        </div>
+                    </div>
+                    <!-- User -->
+                    <div class="pn-user-info">
+                        <span>Ian Charlton</span>
+                        <div class="pn-avatar">IC</div>
+                    </div>
+                    <!-- Logout -->
+                    <button class="pn-logout-btn" id="btn-logout-header">Logout</button>
+                </div>
+            </header>
+
+            <!-- BODY -->
+            <div class="pn-body">
+
+                <!-- SIDEBAR -->
+                <nav class="pn-sidebar">
+
+                    <!-- Project Selector -->
+                    <div class="pn-project-area">
+                        <div class="pn-project-label">Select a Project</div>
+                        <select class="pn-project-select">
+                            <option>Staging Sandpit</option>
+                        </select>
+                    </div>
+
+                    <hr class="pn-sidebar-divider">
+                    <div class="pn-main-menu-label">Main Menu</div>
+
+                    <!-- Worklist -->
+                    <div class="pn-menu-item disabled">
+                        <img class="pn-menu-icon"
+                            src="https://dashboard-prototype-eta.vercel.app/assets/icons/home-icon.svg" alt="">
+                        Worklist <span class="pn-badge">(0)</span>
+                    </div>
+
+                    <hr class="pn-sidebar-divider">
+
+                    <!-- DASHBOARD GROUP -->
+                    <div class="pn-group-header"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-dashboard').classList.toggle('collapsed');">
+                        DASHBOARD <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items" id="grp-dashboard" style="max-height:none;">
+                        <a class="pn-menu-item nav-item active" data-view="gallery" id="nav-gallery-parent">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/dashboard.svg" alt="">
+                            Dashboard Gallery
+                        </a>
+                        <!-- Submenu for Dashboards -->
+                        <div class="submenu" id="sidebar-dashboards-list"
+                            style="padding-left: 20px; font-size: 12px; background: rgba(0,0,0,0.1);">
+                            <!-- Dashboards dynamically populated here -->
+                        </div>
+
+                        <a class="pn-menu-item nav-item" data-view="manage-dashboards">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/dashboard.svg" alt="">
+                            Manage Dashboards
+                        </a>
+                        <a class="pn-menu-item nav-item" data-view="data-sources">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/document-convert-icon.svg"
+                                alt="">
+                            Data Sources
+                        </a>
+                        <a class="pn-menu-item nav-item" data-view="sql-lab">
+                            <img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/workbench.svg" alt="">
+                            SQL Lab
+                        </a>
+                    </div>
+
+                    <!-- QMFACTORY GROUP -->
+                    <div class="pn-group-header collapsed"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-qmf').classList.toggle('collapsed');">
+                        QMFACTORY <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items collapsed" id="grp-qmf" style="max-height:600px;">
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/release.svg" alt="">Release
+                        </div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/user-story.svg" alt="">User
+                            Stories</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/document-convert-icon.svg"
+                                alt="">Document</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/decision-table-icon.svg"
+                                alt="">Decision Table</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/test-design-icon.svg"
+                                alt="">Test Design</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/workbench.svg"
+                                alt="">Workbench</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/test-lab.svg" alt="">Test
+                            Lab</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/execute.svg" alt="">Execute
+                        </div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/bug.svg" alt="">Defect
+                        </div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/report.svg" alt="">Reports
+                        </div>
+                    </div>
+
+                    <!-- ENGINUITY GROUP -->
+                    <div class="pn-group-header collapsed"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-eng').classList.toggle('collapsed');">
+                        ENGINUITY <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items collapsed" id="grp-eng" style="max-height:300px;">
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/ai-menu-icon.svg" alt="">AI
+                            &amp; ML</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/enginuity-workbench.svg"
+                                alt="">Enginuity Workbench</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/batch-scheduling-icon.svg"
+                                alt="">Enginuity Batch</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/VTM-icon.svg"
+                                alt="">Virtual Tester Monitor</div>
+                    </div>
+
+                    <!-- AUTHORISE GROUP -->
+                    <div class="pn-group-header collapsed"
+                        onclick="this.classList.toggle('collapsed'); document.getElementById('grp-auth').classList.toggle('collapsed');">
+                        AUTHORISE <span class="pn-arrow">▼</span>
+                    </div>
+                    <div class="pn-group-items collapsed" id="grp-auth" style="max-height:300px;">
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/acceptancecriteria.svg"
+                                alt="">Acceptance Criteria</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/acceptance-article-icon.svg"
+                                alt="">My Dashboard</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/clipboard-tick.svg"
+                                alt="">Authorise Batch</div>
+                        <div class="pn-menu-item disabled"><img class="pn-menu-icon"
+                                src="https://dashboard-prototype-eta.vercel.app/assets/icons/authorise-workbench.svg"
+                                alt="">Authorise Workbench</div>
+                    </div>
+                </nav>
+
+                <!-- PROTOTYPE CONTENT (replaces iframe) -->
+                <main class="pn-content">
+
+                    <!-- VIEW: Gallery -->
+                    <main class="view-container active-view" id="view-gallery">
+                        <div class="view-header"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Dashboard Gallery</h2>
+                                <p class="text-muted">Select a dashboard to view insights or manage analytics.</p>
+                            </div>
+                            <div class="drawer-search"
+                                style="width: 300px; border: 1px solid var(--color-border); border-radius: 4px; padding: 8px 12px; display: flex; align-items: center; gap: 8px;">
+                                <i data-lucide="search"
+                                    style="width: 16px; height: 16px; color: var(--color-text-muted);"></i>
+                                <input type="text" id="gallery-search" placeholder="Search 14 dashboards..."
+                                    style="border: none; outline: none; width: 100%;">
+                            </div>
+                        </div>
+
+                        <div class="gallery-grid" id="gallery-all" style="padding-top: var(--spacing-4);"></div>
+                    </main>
+
+                    <!-- VIEW: Single Dashboard -->
+                    <main class="view-container hidden" id="view-dashboard"
+                        style="overflow: hidden; display: flex; flex-direction: column;">
+
+                        <!-- Global Filter Bar -->
+                        <div class="global-filter-bar">
+
+                            <!-- Back to Gallery -->
+                            <div class="filter-group" style="flex-direction: row; align-items: center;">
+                                <button class="btn btn-secondary" id="back-to-gallery-btn"
+                                    onclick="switchView('gallery');" style="padding: 6px 12px; gap: 6px;">
+                                    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Gallery
+                                </button>
+                            </div>
+
+                            <!-- Date Range Filter -->
+                            <div class="filter-group">
+                                <label>Date Range</label>
+                                <div class="filter-control" id="filter-date-btn">
+                                    <i data-lucide="calendar"></i><span id="date-label">Last 30 Days</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-date">
+                                    <div class="dropdown-flex">
+                                        <div class="dropdown-presets">
+                                            <div class="dropdown-item preset-item">Last 7 days</div>
+                                            <div class="dropdown-item preset-item active">Last 30 days</div>
+                                            <div class="dropdown-item preset-item">Last 6 months</div>
+                                        </div>
+                                        <div class="dropdown-calendar">
+                                            <div class="text-muted" style="text-align:center; padding: 20px;">[Mock
+                                                Calendar Picker]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project Filter -->
+                            <div class="filter-group">
+                                <label>Project</label>
+                                <div class="filter-control" id="filter-project-btn">
+                                    <i data-lucide="folder"></i><span id="project-label">All Projects</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-project">
+                                    <div class="dropdown-item">All Projects</div>
+                                    <div class="dropdown-item">Staging Sandpit</div>
+                                    <div class="dropdown-item">Florence Health</div>
+                                </div>
+                            </div>
+
+                            <!-- Severity Filter -->
+                            <div class="filter-group">
+                                <label>Severity</label>
+                                <div class="filter-control" id="filter-severity-btn">
+                                    <i data-lucide="alert-triangle"></i><span id="severity-label">All Severities</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-severity">
+                                    <div class="dropdown-item">All Severities</div>
+                                    <div class="dropdown-item">1 – Critical</div>
+                                    <div class="dropdown-item">2 – High</div>
+                                    <div class="dropdown-item">3 – Medium</div>
+                                    <div class="dropdown-item">4 – Low</div>
+                                    <div class="dropdown-item">9 – Other</div>
+                                </div>
+                            </div>
+
+                            <!-- Assign To Filter -->
+                            <div class="filter-group">
+                                <label>Assign To</label>
+                                <div class="filter-control" id="filter-assign-btn">
+                                    <i data-lucide="user"></i><span id="assign-label">All</span>
+                                </div>
+                                <div class="filter-dropdown hidden" id="dropdown-assign">
+                                    <div class="dropdown-item">All</div>
+                                    <div class="dropdown-item">Ian</div>
+                                    <div class="dropdown-item">Swathi</div>
+                                </div>
+                            </div>
+
+                            <!-- Filter Actions -->
+                            <div class="filter-group" style="flex-direction: row; align-items: flex-end; gap: 8px;">
+                                <button class="btn btn-secondary" onclick="showToast('Filters reset to defaults')" style="padding: 6px 12px; font-size: 13px;">
+                                    <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Reset
+                                </button>
+                                <button class="btn btn-primary" onclick="showToast('Filters applied')" style="padding: 6px 12px; font-size: 13px;">
+                                    Apply
+                                </button>
+                            </div>
+
+                            <div class="filter-group"
+                                style="margin-left: auto; flex-direction: row; align-items: center; gap: 8px;">
+
+                                <button class="btn btn-secondary" id="export-btn" onclick="document.getElementById('export-modal').classList.remove('hidden')" style="padding: 6px 12px;">
+                                    <i data-lucide="download" style="width:16px;height:16px;"></i> Export
+                                </button>
+                                <button class="btn btn-secondary" id="share-btn" onclick="document.getElementById('share-modal').classList.remove('hidden')" style="padding: 6px 12px;">
+                                    <i data-lucide="link" style="width:16px;height:16px;"></i> Share
+                                </button>
+                                <button class="btn btn-secondary" id="fullscreen-btn" onclick="enterFullscreen()" style="padding: 6px 12px;">
+                                    <i data-lucide="maximize" style="width:16px;height:16px;"></i>
+                                </button>
+                                <button id="customize-btn" class="btn btn-primary">
+                                    <i data-lucide="edit-3"></i> Customise
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-area"
+                            style="flex: 1; overflow-y: auto; padding: var(--spacing-4); background-color: var(--color-bg-app);">
+                            <div class="dashboard-header">
+                                <h2 id="current-dashboard-title">Dashboard Title</h2>
+                                <div class="dashboard-actions hidden" id="edit-mode-actions">
+                                    <button class="btn btn-secondary" id="reset-layout-btn"
+                                        style="color: var(--color-error); border-color: var(--color-error);">
+                                        <i data-lucide="rotate-ccw"></i> Reset Layout
+                                    </button>
+                                    <button class="btn btn-secondary" id="add-widget-btn">
+                                        <i data-lucide="plus"></i> Add Widget
+                                    </button>
+                                    <button class="btn btn-primary" id="save-layout-btn">
+                                        <i data-lucide="save"></i> Save Layout
+                                    </button>
+                                </div>
+                            </div>
+
+
+                            <div id="mini-dashboard-container" style="display:none; padding: 20px;">
+                                <!-- Mini-Dashboard grouped sections -->
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                    <!-- Release -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Release</span><span class="ms-toggle">▼</span>
+                                        </div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Release Summary</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Active</div>
+                                                            <div class="circle-counter cc-blue">4</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Planned</div>
+                                                            <div class="circle-counter cc-blue">0</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Deployed</div>
+                                                            <div class="circle-counter cc-blue">11</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Execution</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Passed</div>
+                                                            <div class="circle-counter cc-green">87.3%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Failed</div>
+                                                            <div class="circle-counter cc-orange">0.25%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Not Run</div>
+                                                            <div class="circle-counter cc-blue">99.6%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Open Defects</div>
+                                                            <div class="circle-counter cc-red">1002</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- User Stories -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>User Stories</span><span class="ms-toggle">▼</span>
+                                        </div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Requirements Summary</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Draft</div>
+                                                            <div class="circle-counter cc-blue">112</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-green">11</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-blue">123</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Execution</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Passed</div>
+                                                            <div class="circle-counter cc-green">82.1%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Failed</div>
+                                                            <div class="circle-counter cc-orange">0.25%</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">% Not Run</div>
+                                                            <div class="circle-counter cc-blue">99.6%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Open Defects</div>
+                                                            <div class="circle-counter cc-red">681</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Workbench -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Workbench</span><span class="ms-toggle">▼</span>
+                                        </div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Priority</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">01-Gold</div>
+                                                            <div class="circle-counter cc-blue">58</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">02-Silver</div>
+                                                            <div class="circle-counter cc-blue">70</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">03-Bronze</div>
+                                                            <div class="circle-counter cc-blue">32</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-blue">160</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Status</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Draft</div>
+                                                            <div class="circle-counter cc-green">152</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-green">11</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-green">153</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">New/Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">New/Open</div>
+                                                            <div class="circle-counter cc-orange">71</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Enginuity Workbench -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Enginuity Workbench</span><span
+                                                class="ms-toggle">▼</span></div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Priority</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">01-Gold</div>
+                                                            <div class="circle-counter cc-blue">1087</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">02-Silver</div>
+                                                            <div class="circle-counter cc-blue">150</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">03-Bronze</div>
+                                                            <div class="circle-counter cc-blue">53</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-blue">1219</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Case Status</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Draft</div>
+                                                            <div class="circle-counter cc-green">1275</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-green">15</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-green">1290</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">New/Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">New/Open</div>
+                                                            <div class="circle-counter cc-orange">694</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Enginuity Batch -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Enginuity Batch</span><span
+                                                class="ms-toggle">▼</span></div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Batch Status</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Configuring</div>
+                                                            <div class="circle-counter cc-blue">63</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Scheduling</div>
+                                                            <div class="circle-counter cc-blue">13</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Approved</div>
+                                                            <div class="circle-counter cc-blue">0</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Completed</div>
+                                                            <div class="circle-counter cc-blue">198</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total</div>
+                                                            <div class="circle-counter cc-orange">1241</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Test Execution</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Tests</div>
+                                                            <div class="circle-counter cc-green">4452</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Test Steps</div>
+                                                            <div class="circle-counter cc-green">80388</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Defect -->
+                                    <div class="mini-section">
+                                        <div class="ms-header"><span>Defect</span><span class="ms-toggle">▼</span></div>
+                                        <div class="ms-body">
+                                            <div class="ms-groups">
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Avg Residual Risk</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Avg Residual Risk</div>
+                                                            <div class="circle-counter cc-red">3373</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Avg Days</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">All Defects</div>
+                                                            <div class="circle-counter cc-red-fill">19733</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Open Defects</div>
+                                                            <div class="circle-counter cc-red-fill">79814</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Since Activity</div>
+                                                            <div class="circle-counter cc-red-fill">119.65</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Bounce & Reopen</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total Bounce</div>
+                                                            <div class="circle-counter cc-red-fill">33</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Total ReOpen</div>
+                                                            <div class="circle-counter cc-red-fill">82</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-group">
+                                                    <div class="ms-group-title">Open Defects</div>
+                                                    <div class="ms-counters">
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Severity 1 & 2</div>
+                                                            <div class="circle-counter cc-red-fill">1901</div>
+                                                        </div>
+                                                        <div class="mini-counter">
+                                                            <div class="mc-label">Other Severities</div>
+                                                            <div class="circle-counter cc-red-fill">272</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+                            <!-- Main Grid -->
+                            <div id="main-grid-container">
+                                <div class="grid-stack" id="main-grid">
+                                    <!-- Widgets dynamically loaded here -->
+                                </div>
+                            </div>
+                    </main>
+
+                    <!-- VIEW: SQL Lab -->
+                    <main class="view-container hidden" id="view-sql-lab">
+                        <div class="view-header">
+                            <h2>SQL Lab</h2>
+                            <p class="text-muted">Ad-hoc query editor against connected databases.</p>
+                            <div class="sql-lab-container">
+                                <div class="sql-toolbar">
+                                    <div style="display:flex; flex-direction:column; gap:4px;">
+                                        <label
+                                            style="font-size:12px; color:var(--color-text-muted); font-weight:600;">Database
+                                            selector</label>
+                                        <select class="form-select">
+                                            <option>WorkBench</option>
+                                            <option>AutomationOR</option>
+                                        </select>
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; gap:4px;">
+                                        <label
+                                            style="font-size:12px; color:var(--color-text-muted); font-weight:600;">Schema
+                                            selector</label>
+                                        <select class="form-select">
+                                            <option>public</option>
+                                            <option>dbo</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary" id="run-query-btn"
+                                        style="margin-left: var(--spacing-2); align-self: flex-end;">
+                                        <i data-lucide="play"></i> Run Query
+                                    </button>
+                                </div>
+                                <textarea class="sql-editor"
+                                    placeholder="SELECT * FROM defects WHERE severity = 'Critical' LIMIT 100;"></textarea>
+                                <div class="sql-results">
+                                    <div class="placeholder-text" id="sql-empty-state">Run a query to see results here.
+                                    </div>
+                                    <table class="data-table hidden" id="sql-results-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Title</th>
+                                                <th>Severity</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>DEF-102</td>
+                                                <td>Login timeout on prod</td>
+                                                <td><span class="badge badge-error">Critical</span></td>
+                                                <td>Open</td>
+                                            </tr>
+                                            <tr>
+                                                <td>DEF-105</td>
+                                                <td>API 500 error</td>
+                                                <td><span class="badge badge-error">Critical</span></td>
+                                                <td>In Progress</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Data Sources -->
+                    <main class="view-container hidden" id="view-data-sources">
+                        <div class="view-header">
+                            <h2>Data Sources</h2>
+                            <p class="text-muted">Manage database connections that feed the dashboards.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <button class="btn btn-primary" style="margin-bottom: var(--spacing-3);"
+                                onclick="document.getElementById('add-datasource-modal').classList.remove('hidden')">
+                                <i data-lucide="plus"></i> Add Data Source
+                            </button>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Database Type</th>
+                                        <th>Host</th>
+                                        <th>Status</th>
+                                        <th>Tables Synced</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>WorkBench</td>
+                                        <td>MS SQL Server</td>
+                                        <td>sql-prod-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
+                                        <td>142</td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit WorkBench Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete WorkBench Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>AutomationOR</td>
+                                        <td>PostgreSQL</td>
+                                        <td>db-auto-02.internal</td>
+                                        <td><span class="badge badge-error">Error</span></td>
+                                        <td data-actual-count="56">0</td>
+                                        <td>
+                                            <button class="icon-btn" title="Retry Connection"
+                                                onclick="syncDatasource(this)"><i
+                                                    data-lucide="refresh-cw"></i></button>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit AutomationOR Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete AutomationOR Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>QM Factory</td>
+                                        <td>PostgreSQL</td>
+                                        <td>db-qmf-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
+                                        <td>210</td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit QM Factory Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete QM Factory Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Enginuity</td>
+                                        <td>MySQL</td>
+                                        <td>db-eng-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
+                                        <td>85</td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit Enginuity Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Enginuity Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Authorise</td>
+                                        <td>MS SQL Server</td>
+                                        <td>sql-auth-01.internal</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
+                                        <td>34</td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Config"
+                                                onclick="openMockModal('Edit Authorise Source')"><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Authorise Source')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Manage Dashboards -->
+                    <main class="view-container hidden" id="view-manage-dashboards">
+                        <div class="view-header">
+                            <h2>Manage Dashboards</h2>
+                            <p class="text-muted">Admin view of all dashboards and their ownership.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <button class="btn btn-primary" style="margin-bottom: var(--spacing-3);"
+                                onclick="switchView('create-dashboard'); ">
+                                <i data-lucide="plus"></i> New Dashboard
+                            </button>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Owner</th>
+                                        <th>Type</th>
+                                        <th>Chart Count</th>
+                                        <th>Last Modified</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Defect Trend</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Defects</td>
+                                        <td>4</td>
+                                        <td>2 hours ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); "><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Defect Trend Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Releases</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Releases</td>
+                                        <td>2</td>
+                                        <td>1 day ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); "><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Releases Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Test Cases</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Test Cases</td>
+                                        <td>2</td>
+                                        <td>3 days ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); "><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Test Cases Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quadrants</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>1 week ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); "><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Quadrants Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Batches</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Custom</td>
+                                        <td>3</td>
+                                        <td>2 weeks ago</td>
+                                        <td><span class="badge badge-success"
+                                                style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details"
+                                                onclick="switchView('edit-dashboard'); "><i
+                                                    data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
+                                                onclick="openMockModal('Delete Batches Dashboard')"><i
+                                                    data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mini-Dashboard</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>6</td>
+                                        <td>1 month ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Mini-Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Defect Lifecycle</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Defects</td>
+                                        <td>5</td>
+                                        <td>2 hours ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Defect Lifecycle Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Test Execution Health</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Test Cases</td>
+                                        <td>4</td>
+                                        <td>5 hours ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Test Execution Health Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Release Health</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Releases</td>
+                                        <td>4</td>
+                                        <td>1 day ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Release Health Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Requirement Traceability</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>2 days ago</td>
+                                        <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Requirement Traceability Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Test Case Quality</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Test Cases</td>
+                                        <td>4</td>
+                                        <td>3 days ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Test Case Quality Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Productivity</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>4 days ago</td>
+                                        <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete User Productivity Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Batch Scheduling</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Custom</td>
+                                        <td>4</td>
+                                        <td>5 days ago</td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Batch Scheduling Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Root Cause Analysis</td>
+                                        <td>Ian Charlton</td>
+                                        <td>Defects</td>
+                                        <td>4</td>
+                                        <td>6 days ago</td>
+                                        <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
+                                        <td>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Root Cause Analysis Dashboard')"><i data-lucide="trash-2"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Create Dashboard -->
+                    <main class="view-container hidden" id="view-create-dashboard">
+                        <div class="view-header"
+                            style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <button class="btn btn-secondary"
+                                    style="margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 8px;"
+                                    onclick="switchView('manage-dashboards'); ">
+                                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back
+                                </button>
+                                <h2>Create Dashboard</h2>
+                                <p class="text-muted">Configure your new dashboard and layout.</p>
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 36px;">
+                                <button class="btn btn-secondary"
+                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); ">Save
+                                    Draft</button>
+                                <button class="btn btn-primary"
+                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); ">Publish</button>
+                            </div>
+                        </div>
+
+                        <div
+                            style="padding: var(--spacing-4); display: flex; flex-direction: column; gap: 24px; max-width: 800px;">
+                            <!-- Form Fields -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Dashboard Name <span
+                                            style="color: var(--color-error);">*</span></label>
+                                    <input type="text" placeholder="e.g. Defect Trend Dashboard"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Description <span
+                                            style="color: var(--color-error);">*</span></label>
+                                    <textarea placeholder="Monthly defect trend analysis with..." rows="3"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; resize: vertical;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'"></textarea>
+                                </div>
+
+                                <div style="display: flex; gap: 24px;">
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Type <span
+                                                style="color: var(--color-error);">*</span></label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option>Defects</option>
+                                            <option>Releases</option>
+                                            <option>Test Cases</option>
+                                            <option>Custom</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Visibility <span
+                                                style="color: var(--color-error);">*</span></label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option>All Users</option>
+                                            <option>Admin Only</option>
+                                            <option>Specific Roles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Grid Area -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color); flex: 1; min-height: 400px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h3 style="margin: 0; font-size: 16px;">Charts <span
+                                            style="color: var(--color-error);">*</span> <span class="text-muted"
+                                            style="font-size: 13px; font-weight: normal; margin-left: 8px;">(12-column
+                                            grid, drag to resize/reorder)</span></h3>
+                                    <button class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 13px; display: flex; align-items: center; gap: 6px;"
+                                        onclick="openAddChartModal()">
+                                        <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add Chart
+                                    </button>
+                                </div>
+
+                                <div class="grid-stack"
+                                    style="background: #fafafa; border: 1px dashed var(--border-color); border-radius: 4px; min-height: 200px; padding: 10px;">
+                                    <!-- Dynamic Grid Items -->
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Edit Dashboard -->
+                    <main class="view-container hidden" id="view-edit-dashboard">
+                        <div class="view-header"
+                            style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <button class="btn btn-secondary"
+                                    style="margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 8px;"
+                                    onclick="switchView('manage-dashboards'); ">
+                                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back
+                                </button>
+                                <h2>Edit Dashboard</h2>
+                                <p class="text-muted">Modify your dashboard settings and layout.</p>
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 36px;">
+                                <button class="btn btn-secondary"
+                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); ">Save
+                                    Draft</button>
+                                <button class="btn btn-primary"
+                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); ">Publish</button>
+                            </div>
+                        </div>
+
+                        <div
+                            style="padding: var(--spacing-4); display: flex; flex-direction: column; gap: 24px; max-width: 800px;">
+                            <!-- Form Fields -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Dashboard Name <span
+                                            style="color: var(--color-error);">*</span></label>
+                                    <input type="text" value="Defect Trend Dashboard"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'">
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="font-weight: 500; color: var(--text-color);">Description <span
+                                            style="color: var(--color-error);">*</span></label>
+                                    <textarea rows="3"
+                                        style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; resize: vertical;"
+                                        onfocus="this.style.borderColor='var(--color-primary)'"
+                                        onblur="this.style.borderColor='var(--border-color)'">Monthly defect trend analysis with severity distribution, workflow stages, and exception indicators across active projects.</textarea>
+                                </div>
+
+                                <div style="display: flex; gap: 24px;">
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Type <span
+                                                style="color: var(--color-error);">*</span></label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option selected>Defects</option>
+                                            <option>Releases</option>
+                                            <option>Test Cases</option>
+                                            <option>Custom</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+                                        <label style="font-weight: 500; color: var(--text-color);">Visibility <span
+                                                style="color: var(--color-error);">*</span></label>
+                                        <select
+                                            style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
+                                            <option>All Users</option>
+                                            <option>Admin Only</option>
+                                            <option>Specific Roles</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Grid Area -->
+                            <div
+                                style="display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 8px; border: 1px solid var(--border-color); flex: 1; min-height: 400px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h3 style="margin: 0; font-size: 16px;">Charts <span
+                                            style="color: var(--color-error);">*</span> <span class="text-muted"
+                                            style="font-size: 13px; font-weight: normal; margin-left: 8px;">(12-column
+                                            grid,
+                                            drag to resize/reorder)</span></h3>
+                                    <button class="btn btn-secondary"
+                                        style="padding: 6px 12px; font-size: 13px; display: flex; align-items: center; gap: 6px;"
+                                        onclick="openAddChartModal()">
+                                        <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add Chart
+                                    </button>
+                                </div>
+
+                                <div class="grid-stack"
+                                    style="background: #fafafa; border: 1px dashed var(--border-color); border-radius: 4px; min-height: 200px; padding: 10px;">
+                                    <!-- Dynamic Grid Items -->
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Audit Logs -->
+                    <main class="view-container hidden" id="view-audit-logs">
+                        <div class="view-header">
+                            <h2>Audit Log Viewer (R14)</h2>
+                            <p class="text-muted">Enterprise compliance logs for all analytics interactions.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <div class="placeholder-text">Audit Log Table: Timestamp | User | Action | Resource ID |
+                                Status
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings Hub -->
+                    <main class="view-container hidden" id="view-settings-hub">
+                        <div class="view-header">
+                            <h2>Platform Settings</h2>
+                            <p class="text-muted">Centralized administration hub for your Pinnacle platform instance.
+                            </p>
+                        </div>
+                        <div
+                            style="padding: var(--spacing-4); display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+                            <!-- Settings Cards -->
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-licence\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="key"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Licence Management</h3>
+                                    <p class="text-muted" style="font-size: 14px;">View licence keys, seat counts, and
+                                        expiry
+                                        dates</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-roles\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="shield"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Roles & Permissions</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Manage user access across dashboards
+                                        and
+                                        tools</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-services\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="server"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Service Catalogue</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Platform services, SLAs, and
+                                        operational
+                                        status</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-projects\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="briefcase"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Project Management</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Multi-tenant project configuration
+                                        and
+                                        tracking</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-card" style="cursor:pointer;"
+                                onclick="document.querySelector('.dropdown-item[data-view=\'settings-requests\']').click()">
+                                <div style="padding: 24px; text-align: center;">
+                                    <i data-lucide="life-buoy"
+                                        style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 16px;"></i>
+                                    <h3 style="font-size: 18px; margin-bottom: 8px;">Service Request</h3>
+                                    <p class="text-muted" style="font-size: 14px;">Submit and track incidents or access
+                                        requests
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Licence -->
+                    <main class="view-container hidden" id="view-settings-licence">
+                        <div class="view-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Licence Management</h2>
+                                <p class="text-muted">Manage software licences across all Pinnacle products.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openMockModal('Add New Licence')">
+                                <i data-lucide="plus"></i> Add Licence
+                            </button>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <table class="data-table">
+                                <thead><tr><th>Licence Key</th><th>Product</th><th>Total Seats</th><th>Used Seats</th><th>Expiry Date</th><th>Status</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-ENT-2026-X8Y2</td><td>QMFactory</td><td>50</td><td>45</td><td>31 Dec 2026</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td></tr>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-AUT-2026-K3M7</td><td>Enginuity</td><td>30</td><td>28</td><td>31 Dec 2026</td><td><span class="badge" style="background:#FFB300; color:#333">Near Limit</span></td></tr>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-AUTH-2025-P1Q9</td><td>Authorise</td><td>20</td><td>20</td><td>15 Mar 2025</td><td><span class="badge" style="background:#E53935; color:#fff">Expired</span></td></tr>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-DSH-2026-R4S6</td><td>Dashboard Analytics</td><td>100</td><td>67</td><td>30 Jun 2027</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Roles -->
+                    <main class="view-container hidden" id="view-settings-roles">
+                        <div class="view-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Roles and Permissions</h2>
+                                <p class="text-muted">Define user roles and control access to dashboards, data sources, and admin functions.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openMockModal('Add New Role')">
+                                <i data-lucide="plus"></i> Add Role
+                            </button>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <table class="data-table">
+                                <thead><tr><th>Role Name</th><th>Users</th><th>Dashboard Access</th><th>Data Source Access</th><th>SQL Lab</th><th>Admin</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="font-weight: 500;">Platform Admin</td><td>3</td><td><span class="badge" style="background:#43A047; color:#fff">Full</span></td><td><span class="badge" style="background:#43A047; color:#fff">Full</span></td><td><span class="badge" style="background:#43A047; color:#fff">Yes</span></td><td><span class="badge" style="background:#43A047; color:#fff">Yes</span></td></tr>
+                                    <tr><td style="font-weight: 500;">Dashboard Admin</td><td>5</td><td><span class="badge" style="background:#43A047; color:#fff">Full</span></td><td><span class="badge" style="background:#1E3A8A; color:#fff">Read</span></td><td><span class="badge" style="background:#43A047; color:#fff">Yes</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                    <tr><td style="font-weight: 500;">QA Manager</td><td>12</td><td><span class="badge" style="background:#1E3A8A; color:#fff">View</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">None</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                    <tr><td style="font-weight: 500;">Team Member</td><td>35</td><td><span class="badge" style="background:#1E3A8A; color:#fff">View</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">None</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                    <tr><td style="font-weight: 500;">External Auditor</td><td>2</td><td><span class="badge" style="background:#FFB300; color:#333">Limited</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">None</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Services -->
+                    <main class="view-container hidden" id="view-settings-services">
+                        <div class="view-header">
+                            <h2>Service Catalogue</h2>
+                            <p class="text-muted">View all available platform services, their owners, SLAs, and operational status.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <table class="data-table">
+                                <thead><tr><th>Service Name</th><th>Module</th><th>Owner</th><th>SLA Tier</th><th>Status</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Authentication Engine</td><td>Platform</td><td>Platform Team</td><td>Tier 1 — 99.9%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                    <tr><td>Dashboard Analytics</td><td>Superset</td><td>Ian Charlton</td><td>Tier 2 — 99.5%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                    <tr><td>Report Generator</td><td>QMFactory</td><td>Swathi Devi</td><td>Tier 2 — 99.5%</td><td><span class="badge" style="background:#FFB300; color:#333">Maintenance</span></td></tr>
+                                    <tr><td>Batch Scheduler</td><td>Enginuity</td><td>Platform Team</td><td>Tier 1 — 99.9%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                    <tr><td>Email Notification Service</td><td>Platform</td><td>Platform Team</td><td>Tier 3 — 99.0%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Projects -->
+                    <main class="view-container hidden" id="view-settings-projects">
+                        <div class="view-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Project Management</h2>
+                                <p class="text-muted">Manage all tenant projects — each project has its own users, dashboards, and data scope.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openMockModal('Create New Project')">
+                                <i data-lucide="plus"></i> New Project
+                            </button>
+                        </div>
+                        <div style="padding: var(--spacing-4);">
+                            <table class="data-table">
+                                <thead><tr><th>Project Name</th><th>Owner</th><th>Status</th><th>Users</th><th>Dashboards</th><th>Last Updated</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="font-weight: 500;">Florence Health</td><td>Ian Charlton</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td><td>24</td><td>8</td><td>2 hours ago</td></tr>
+                                    <tr><td style="font-weight: 500;">Staging Sandpit</td><td>Swathi Devi</td><td><span class="badge" style="background:#FFB300; color:#333">Onboarding</span></td><td>6</td><td>3</td><td>1 day ago</td></tr>
+                                    <tr><td style="font-weight: 500;">Core QA Platform</td><td>Ian Charlton</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td><td>45</td><td>14</td><td>3 hours ago</td></tr>
+                                    <tr><td style="font-weight: 500;">Legacy Migration</td><td>Platform Team</td><td><span class="badge" style="background:#9E9E9E; color:#fff">Archived</span></td><td>0</td><td>2</td><td>3 months ago</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+
+                    <!-- VIEW: Settings - Requests -->
+                    <main class="view-container hidden" id="view-settings-requests">
+                        <div class="view-header">
+                            <h2>Service Requests</h2>
+                            <p class="text-muted">Submit and track support requests — access changes, new dashboard requests, bug reports.</p>
+                        </div>
+                        <div style="padding: var(--spacing-4); display: flex; flex-direction: column; gap: 24px;">
+                            <!-- New Request Form -->
+                            <div style="border: 1px solid var(--color-border); border-radius: 4px; padding: 20px; background: var(--color-bg-surface);">
+                                <h3 style="margin-bottom: 16px; font-size: 16px;">Submit New Request</h3>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <label style="font-size: 13px; font-weight: 500;">Request Type</label>
+                                        <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                                            <option>New Dashboard Request</option>
+                                            <option>Access Change</option>
+                                            <option>Bug Report</option>
+                                            <option>Data Source Request</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <label style="font-size: 13px; font-weight: 500;">Priority</label>
+                                        <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                                            <option>Low</option>
+                                            <option selected>Medium</option>
+                                            <option>High</option>
+                                            <option>Critical</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 16px;">
+                                    <label style="font-size: 13px; font-weight: 500;">Subject</label>
+                                    <input type="text" placeholder="Brief summary of your request..." style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 16px;">
+                                    <label style="font-size: 13px; font-weight: 500;">Description</label>
+                                    <textarea rows="3" placeholder="Describe your request in detail..." style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border); resize: vertical;"></textarea>
+                                </div>
+                                <button class="btn btn-primary" style="margin-top: 16px;" onclick="showToast('Service request submitted successfully')">
+                                    <i data-lucide="send"></i> Submit Request
+                                </button>
+                            </div>
+                            <!-- Recent Requests Table -->
+                            <div>
+                                <h3 style="margin-bottom: 12px; font-size: 16px;">Recent Requests</h3>
+                                <table class="data-table">
+                                    <thead><tr><th>Ticket ID</th><th>Subject</th><th>Priority</th><th>Status</th><th>Last Updated</th></tr></thead>
+                                    <tbody>
+                                        <tr><td style="font-family: monospace;">SR-0042</td><td>Add User Productivity dashboard to prod</td><td><span class="badge" style="background:#FFB300; color:#333">Medium</span></td><td><span class="badge" style="background:#1E3A8A; color:#fff">In Progress</span></td><td>3 hours ago</td></tr>
+                                        <tr><td style="font-family: monospace;">SR-0041</td><td>Grant SQL Lab access for QA team</td><td><span class="badge" style="background:#E53935; color:#fff">High</span></td><td><span class="badge" style="background:#FFB300; color:#333">Pending Approval</span></td><td>1 day ago</td></tr>
+                                        <tr><td style="font-family: monospace;">SR-0039</td><td>Fix date filter not resetting on Defect Trend</td><td><span class="badge" style="background:#43A047; color:#fff">Low</span></td><td><span class="badge" style="background:#43A047; color:#fff">Resolved</span></td><td>3 days ago</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </main>
+                </main> <!-- End pn-content -->
+            </div> <!-- End pn-body -->
+        </div> <!-- End screen-dashboard -->
+    </div> <!-- End app-container -->
+
+    <!-- MOCK MODAL -->
+    <div class="modal-overlay hidden" id="mock-modal-overlay"></div>
+    <div class="modal hidden" id="mock-modal">
+        <div class="modal-header">
+            <h3 id="mock-modal-title">Modal Title</h3>
+            <button class="icon-btn" onclick="closeMockModal()"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body">
+            <p>This is a placeholder for the administrative action.</p>
+            <p class="text-muted" style="margin-top: 12px; font-size: 13px;">Expected behavior is implemented in
+                production backend.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeMockModal()">Cancel</button>
+            <button class="btn btn-primary"
+                onclick="closeMockModal(); showToast('Action completed successfully');">Confirm Action</button>
+        </div>
+    </div>
+
+    <!-- EXPORT MODAL (Screen 3D) -->
+    <div class="modal-overlay hidden" id="export-modal">
+        <div class="modal" style="width: 460px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">📤 Export Dashboard</h3>
+                <button class="icon-btn" onclick="document.getElementById('export-modal').classList.add('hidden')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Format <span style="color: var(--color-error);">*</span></label>
+                    <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                        <option>PDF</option>
+                        <option>PNG</option>
+                        <option>CSV</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                        <input type="checkbox" checked> Include current filters
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                        <input type="checkbox" checked> Include data tables
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                        <input type="checkbox"> Include raw data (CSV attachment)
+                    </label>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Paper Size</label>
+                    <div style="display: flex; gap: 16px;">
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 14px; cursor: pointer;"><input type="radio" name="paper-size"> A4</label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 14px; cursor: pointer;"><input type="radio" name="paper-size" checked> Letter</label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 14px; cursor: pointer;"><input type="radio" name="paper-size"> Landscape</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="document.getElementById('export-modal').classList.add('hidden')">Cancel</button>
+                <button class="btn btn-primary" onclick="document.getElementById('export-modal').classList.add('hidden'); showToast('Dashboard exported successfully')">
+                    <i data-lucide="download" style="width:16px;height:16px;"></i> Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHARE MODAL (Screen 3E) -->
+    <div class="modal-overlay hidden" id="share-modal">
+        <div class="modal" style="width: 520px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">🔗 Share Dashboard</h3>
+                <button class="icon-btn" onclick="document.getElementById('share-modal').classList.add('hidden')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Dashboard URL</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" id="share-url" value="https://pinnacle.io/dashboard/defect-trend" readonly
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border); flex: 1; background: #f9fafb; font-size: 13px; font-family: monospace;">
+                        <button class="btn btn-secondary" style="padding: 6px 12px;" onclick="navigator.clipboard.writeText(document.getElementById('share-url').value); showToast('Link copied to clipboard')">
+                            <i data-lucide="copy" style="width:16px;height:16px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Embed Code (iframe)</label>
+                    <div style="display: flex; gap: 8px; align-items: flex-start;">
+                        <textarea id="share-embed" readonly rows="3"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border); flex: 1; background: #f9fafb; font-size: 12px; font-family: monospace; resize: none;">&lt;iframe src="https://pinnacle.io/embed/defect-trend" width="100%" height="600"&gt;&lt;/iframe&gt;</textarea>
+                        <button class="btn btn-secondary" style="padding: 6px 12px;" onclick="navigator.clipboard.writeText(document.getElementById('share-embed').value); showToast('Embed code copied to clipboard')">
+                            <i data-lucide="copy" style="width:16px;height:16px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                    <input type="checkbox" checked> Include current filter state
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="document.getElementById('share-modal').classList.add('hidden')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Widget Gallery Drawer (for Edit Mode) -->
+    <div class="drawer-overlay hidden" id="drawer-overlay"></div>
+    <div class="widget-drawer hidden" id="widget-drawer">
+        <div class="drawer-header">
+            <h3>Widget Catalogue</h3>
+            <button class="icon-btn" id="close-drawer-btn"><i data-lucide="x"></i></button>
+        </div>
+        <div class="drawer-search">
+            <i data-lucide="search"></i><input type="text" placeholder="Search 60+ widgets...">
+        </div>
+        <div class="drawer-content">
+            <div class="widget-list" id="drawer-widget-list">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="toast hidden" id="toast">
+        <i data-lucide="check-circle" class="toast-icon"></i>
+        <span class="toast-message">Action successful</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app2.js"></script>
+
+    <!-- Add Chart Modal -->
+    <div class="modal-overlay hidden" id="add-chart-modal">
+        <div class="modal" style="width: 700px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">Add Chart Configuration</h3>
+                <button class="icon-btn" onclick="document.getElementById('add-chart-modal').classList.add('hidden')"><i
+                        data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 20px;">
+
+                <!-- Data Source Section -->
+                <div
+                    style="background: #fafafa; padding: 16px; border: 1px solid var(--border-color); border-radius: 6px;">
+                    <h4 style="margin: 0 0 12px 0; font-size: 14px; color: var(--color-primary);">1. Data Source</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 500;">Database</label>
+                            <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                <option>WorkBench</option>
+                                <option>AutomationOR</option>
+                                <option>QM Factory</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 500;">Schema</label>
+                            <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                <option>public</option>
+                                <option>dbo</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 500;">Table</label>
+                            <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                <option>defects_summary</option>
+                                <option>test_executions</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualization Type -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-weight: 500;">2. Chart Type <span
+                            style="color: var(--color-error);">*</span></label>
+                    <select id="chart-type-selector" onchange="updateChartConfigFields()"
+                        style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); width: 100%; max-width: 300px;">
+                        <option value="pie">Pie Chart</option>
+                        <option value="bar">Bar Chart</option>
+                        <option value="table">Table</option>
+                        <option value="line">Line Chart</option>
+                    </select>
+                </div>
+
+                <!-- Configuration Fields (Dynamic) -->
+                <div
+                    style="background: #fafafa; padding: 16px; border: 1px solid var(--border-color); border-radius: 6px;">
+                    <h4 style="margin: 0 0 12px 0; font-size: 14px; color: var(--color-primary);">3. Query Configuration
+                    </h4>
+
+                    <div id="config-pie" class="chart-config-section">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                    <option>created_at</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metric <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>COUNT(id)</option>
+                                    <option>SUM(cost)</option>
+                                    <option>AVG(resolution_time)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Filters</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>status = 'Open'</option>
+                                    <option>severity = 'Sev 1'</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Row Limit</label>
+                                <input type="number" value="100"
+                                    style="padding: 6px; border: 1px solid var(--border-color); border-radius: 4px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="config-bar" class="chart-config-section hidden">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">X-Axis <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>created_at</option>
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metrics <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>SUM(cost)</option>
+                                    <option>COUNT(id)</option>
+                                    <option>AVG(resolution_time)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions (Group By)</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Filters</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>status = 'Open'</option>
+                                    <option>severity = 'Sev 1'</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="config-table" class="chart-config-section hidden">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Query Mode <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>Aggregate</option>
+                                    <option>Raw Records</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions</label>
+                                <select style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);"
+                                    multiple>
+                                    <option selected>Severity</option>
+                                    <option selected>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                    <option>created_at</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metrics</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>COUNT(id)</option>
+                                    <option>SUM(cost)</option>
+                                    <option>AVG(resolution_time)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Filters</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>status = 'Open'</option>
+                                    <option>severity = 'Sev 1'</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="config-line" class="chart-config-section hidden">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">X-Axis (Time) <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>created_at</option>
+                                    <option>resolved_at</option>
+                                    <option>updated_at</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Metrics <span
+                                        style="color: var(--color-error);">*</span></label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>AVG(resolution_time)</option>
+                                    <option>COUNT(id)</option>
+                                    <option>SUM(cost)</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 12px; font-weight: 500;">Dimensions</label>
+                                <select
+                                    style="padding: 6px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                    <option>None</option>
+                                    <option>Severity</option>
+                                    <option>Status</option>
+                                    <option>Environment</option>
+                                    <option>Root Cause</option>
+                                    <option>Assignee</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Basic Meta -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="font-weight: 500;">Chart Name <span
+                            style="color: var(--color-error);">*</span></label>
+                    <input type="text" id="add-chart-name" placeholder="e.g. Defect Trend by Severity"
+                        style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('add-chart-modal').classList.add('hidden')">Cancel</button>
+                <button class="btn btn-primary" onclick="addChartToGrid()">Save Chart</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Data Source Modal -->
+    <div class="modal-overlay hidden" id="add-datasource-modal">
+        <div class="modal" style="width: 500px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">Add Data Source</h3>
+                <button class="icon-btn"
+                    onclick="document.getElementById('add-datasource-modal').classList.add('hidden')"><i
+                        data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Display Name <span
+                            style="color: var(--color-error);">*</span></label>
+                    <input type="text" placeholder="e.g. WorkBench Prod"
+                        style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Database Type <span
+                            style="color: var(--color-error);">*</span></label>
+                    <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                        <option>PostgreSQL</option>
+                        <option>MySQL</option>
+                        <option>MS SQL Server</option>
+                        <option>Oracle</option>
+                    </select>
+                </div>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Host <span
+                                style="color: var(--color-error);">*</span></label>
+                        <input type="text" placeholder="e.g. db.internal.com"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Port</label>
+                        <input type="number" placeholder="5432"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Username</label>
+                        <input type="text"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 13px; font-weight: 500;">Password</label>
+                        <input type="password"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--border-color);">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    onclick="document.getElementById('add-datasource-modal').classList.add('hidden')">Cancel</button>
+                <button class="btn btn-primary"
+                    onclick="document.getElementById('add-datasource-modal').classList.add('hidden'); showToast('Data Source added successfully')">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+<style>
+@keyframes spin { 100% { transform: rotate(360deg); } }
+</style>
+<script>
+function syncDatasource(btn) {
+    if (btn.disabled) return;
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" style="animation: spin 1s linear infinite;"></i>';
+    lucide.createIcons();
+    
+    setTimeout(() => {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+        lucide.createIcons();
+        showToast('✅ Connection Retried Successfully');
+        // Update the badge to Connected
+        const tr = btn.closest('tr');
+        if (tr) {
+            const statusCell = tr.querySelectorAll('td')[3];
+            if (statusCell) {
+                statusCell.innerHTML = '<span class="badge badge-success" style="background:#43A047">Connected</span>';
+            }
+            const syncedCell = tr.querySelectorAll('td')[4];
+            if (syncedCell && syncedCell.hasAttribute('data-actual-count')) {
+                syncedCell.innerHTML = syncedCell.getAttribute('data-actual-count');
+            }
+            // Remove the sync button
+            btn.remove();
+        }
+    }, 2000);
+}
+
+// Fullscreen Mode (Screen 3F)
+function enterFullscreen() {
+    const dashArea = document.querySelector('.dashboard-area') || document.getElementById('view-dashboard');
+    if (dashArea && dashArea.requestFullscreen) {
+        dashArea.requestFullscreen().then(() => {
+            showToast('Press ESC to exit fullscreen');
+        }).catch(() => {
+            showToast('Fullscreen not supported in this browser');
+        });
+    }
+}
+document.addEventListener('fullscreenchange', function() {
+    if (!document.fullscreenElement) {
+        // Exited fullscreen
+    }
+});
+</script>
+
+</body>
+
+</html>
