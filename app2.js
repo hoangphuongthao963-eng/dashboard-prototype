@@ -6,7 +6,7 @@ function createWidgetContent(title, desc, chartType = 'bar', chartKey = '', labe
     if (chartType === 'kpi') {
         contentHtml = `
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-                <div style="display: flex; gap: 24px; align-items: center; justify-content: center;">
+                <div style="display: flex; gap: 40px; align-items: center; justify-content: center;">
                     <div style="text-align: center;">
                         <div style="font-size: 28px; font-weight: 600; color: #1890ff;">${Math.floor(Math.random() * 1000) + 100}</div>
                         <div style="font-size: 11px; color: #8c8c8c; margin-top: 4px;">Metric 1</div>
@@ -48,16 +48,16 @@ function createWidgetContent(title, desc, chartType = 'bar', chartKey = '', labe
             const color = colors[i % colors.length];
             const labelText = labels[i] || `KPI ${i + 1}`;
             circlesHtml += `
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 45px; flex: 1;">
-                    <div style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: ${color}20; color: ${color}; border: 2px solid ${color}; font-weight: 600; font-size: 12px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 60px;">
+                    <div style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: ${color}20; color: ${color}; border: 2px solid ${color}; font-weight: 600; font-size: 14px;">
                         ${Math.floor(Math.random() * 50) + 1}
                     </div>
-                    <div style="font-size: 9px; color: #8c8c8c; text-align: center; max-width: 80px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.2;">${labelText}</div>
+                    <div style="font-size: 10px; color: #8c8c8c; text-align: center; max-width: 90px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3;">${labelText}</div>
                 </div>
             `;
         }
         contentHtml = `
-            <div style="display: flex; justify-content: space-evenly; align-items: center; height: 100%; flex-wrap: wrap; align-content: center; gap: 4px; overflow: hidden; padding: 2px;">
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%; flex-wrap: wrap; align-content: center; gap: 20px 16px; overflow: hidden; padding: 8px;">
                 ${circlesHtml}
             </div>`;
     } else if (chartType === 'gauge') {
@@ -92,11 +92,11 @@ function createWidgetContent(title, desc, chartType = 'bar', chartKey = '', labe
             <div class="widget-title">${title}</div>
             <div class="widget-drag-handle"><i data-lucide="grip-horizontal"></i></div>
         </div>
-        <div class="widget-body" style="position: relative; height: calc(100% - 36px); width: 100%; display: flex; flex-direction: column; padding: 8px;">
+        <div class="widget-body" style="position: relative; height: calc(100% - 36px); width: 100%; display: flex; flex-direction: column; padding: 16px;">
             <div style="flex-grow: 1; min-height: 0; position: relative;">
                 ${contentHtml}
             </div>
-            <div class="text-muted" style="font-size: 11px; text-align: center; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 4px; border-top: 1px solid #f0f0f0;">${desc}</div>
+            <div class="text-muted" style="font-size: 11px; text-align: center; margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 8px; border-top: 1px solid #f0f0f0;">${desc}</div>
         </div>
     `;
 }
@@ -502,12 +502,12 @@ const chartDataStore = {
                 { label: 'Bronze', data: [12], backgroundColor: '#cd7f32' }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { stacked: true, title: { display: true, text: 'Test Cases' } }, y: { stacked: true, display: false } }, plugins: { legend: { display: true, position: 'right' } } }
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', layout: { padding: 10 }, scales: { x: { stacked: true, title: { display: true, text: 'Test Cases' } }, y: { stacked: true, display: false } }, plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'chart-donut': {
         type: 'doughnut',
         data: { labels: ['New', 'Open', 'Deferred', 'Closed'], datasets: [{ data: [1357, 98, 12, 64], backgroundColor: [PinnacleColors.new, PinnacleColors.open, PinnacleColors.deferred, PinnacleColors.closed], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: true, position: 'right' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '65%', layout: { padding: { right: 20 } }, plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'chart-bar': {
         type: 'bar',
@@ -519,22 +519,22 @@ const chartDataStore = {
                 { label: 'Severity 4', data: [20], backgroundColor: PinnacleColors.sev4 }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Defects' } } }, plugins: { legend: { position: 'top' } } }
+        options: { responsive: true, maintainAspectRatio: false, layout: { padding: 10 }, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Defects' } } }, plugins: { legend: { position: 'top', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'chart-release-wf': {
         type: 'doughnut',
         data: { labels: ['Draft', 'Ready For Review', 'Rework Required', 'Approved', 'Deployed'], datasets: [{ data: [67, 6, 1, 5, 11], backgroundColor: ['#faad14', '#52c41a', '#722ed1', '#1890ff', '#F6B168'], borderWidth: 2, borderColor: '#fff' }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: true, position: 'right' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', layout: { padding: { right: 20 } }, plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'chart-tc-wf': {
         type: 'doughnut',
         data: { labels: ['Draft', 'Ready For Review', 'Rework Required', 'Approved', 'Retired'], datasets: [{ data: [1380, 17, 12, 26, 18], backgroundColor: ['#faad14', '#52c41a', '#722ed1', '#1890ff', '#999'], borderWidth: 2, borderColor: '#fff' }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: true, position: 'right' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', layout: { padding: { right: 20 } }, plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'chart-batch-wf': {
         type: 'doughnut',
         data: { labels: ['Configuring', 'Scheduling', 'Executing', 'Completed'], datasets: [{ data: [70, 10, 46, 1169], backgroundColor: ['#faad14', '#ff4d4f', '#52c41a', '#722ed1'], borderWidth: 2, borderColor: '#fff' }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: true, position: 'right' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', layout: { padding: { right: 20 } }, plugins: { legend: { display: true, position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'chart-batch-freq': {
         type: 'bar',
@@ -549,7 +549,7 @@ const chartDataStore = {
     'sd1-chart1': {
         type: 'bar',
         data: { labels: ['Sev 1', 'Sev 2', 'Sev 3', 'Sev 4'], datasets: [{ label: 'Min (days)', data: [3, 5, 2, 1], backgroundColor: 'rgba(82,196,26,0.6)' }, { label: 'Avg (days)', data: [12, 8, 5, 3], backgroundColor: 'rgba(24,144,255,0.6)' }, { label: 'Max (days)', data: [45, 28, 18, 10], backgroundColor: 'rgba(255,77,79,0.6)' }] },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Days' } } }, plugins: { legend: { position: 'right', labels: { font: { family: 'Poppins', size: 11 } } } } }
+        options: { responsive: true, maintainAspectRatio: false, layout: { padding: 10 }, scales: { y: { title: { display: true, text: 'Days' } } }, plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle', font: { family: 'Poppins', size: 11 } } } } }
     },
     'sd1-chart2': {
         type: 'line',
@@ -579,7 +579,7 @@ const chartDataStore = {
     'sd4-chart1': {
         type: 'doughnut',
         data: { labels: ['Full Coverage', 'Partial', 'No Coverage'], datasets: [{ data: [65, 20, 15], backgroundColor: ['#52c41a', '#faad14', '#ff4d4f'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'right' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', layout: { padding: { right: 20 } }, plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'sd4-chart3': {
         type: 'scatter',
@@ -589,7 +589,7 @@ const chartDataStore = {
     'sd5-chart1': {
         type: 'doughnut',
         data: { labels: ['Manual', 'Automated', 'Component'], datasets: [{ data: [340, 310, 120], backgroundColor: ['#1890ff', '#52c41a', '#722ed1'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'right' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', layout: { padding: { right: 20 } }, plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } } }
     },
     'sd5-chart2': {
         type: 'bar',
