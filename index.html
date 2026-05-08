@@ -121,6 +121,17 @@
             border-left: none !important;
         }
 
+        .submenu-item.active {
+            background: rgba(255,255,255,0.15) !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            border-left: none !important;
+        }
+        .submenu-item:hover {
+            background: rgba(255,255,255,0.08) !important;
+            color: #fff !important;
+        }
+
         /* Dashboard Grid Items */
         .grid-stack-item-content {
             border-radius: 12px !important;
@@ -138,6 +149,14 @@
             border-radius: 12px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             border: none;
+        }
+
+        /* Widget Labels */
+        .mc-label, .ms-group-title, .widget-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
         }
     </style>
 </head>
