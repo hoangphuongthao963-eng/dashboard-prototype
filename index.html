@@ -446,6 +446,14 @@
                         <!-- Global Filter Bar -->
                         <div class="global-filter-bar">
 
+                            <!-- Back to Gallery -->
+                            <div class="filter-group" style="flex-direction: row; align-items: center;">
+                                <button class="btn btn-secondary" id="back-to-gallery-btn"
+                                    onclick="switchView('gallery');" style="padding: 6px 12px; gap: 6px;">
+                                    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Gallery
+                                </button>
+                            </div>
+
                             <!-- Date Range Filter -->
                             <div class="filter-group">
                                 <label>Date Range</label>
@@ -509,9 +517,28 @@
                                 </div>
                             </div>
 
-                            <div class="filter-group"
-                                style="margin-left: auto; flex-direction: row; align-items: center; gap: 12px;">
+                            <!-- Filter Actions -->
+                            <div class="filter-group" style="flex-direction: row; align-items: flex-end; gap: 8px;">
+                                <button class="btn btn-secondary" onclick="showToast('Filters reset to defaults')" style="padding: 6px 12px; font-size: 13px;">
+                                    <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Reset
+                                </button>
+                                <button class="btn btn-primary" onclick="showToast('Filters applied')" style="padding: 6px 12px; font-size: 13px;">
+                                    Apply
+                                </button>
+                            </div>
 
+                            <div class="filter-group"
+                                style="margin-left: auto; flex-direction: row; align-items: center; gap: 8px;">
+
+                                <button class="btn btn-secondary" id="export-btn" onclick="document.getElementById('export-modal').classList.remove('hidden')" style="padding: 6px 12px;">
+                                    <i data-lucide="download" style="width:16px;height:16px;"></i> Export
+                                </button>
+                                <button class="btn btn-secondary" id="share-btn" onclick="document.getElementById('share-modal').classList.remove('hidden')" style="padding: 6px 12px;">
+                                    <i data-lucide="link" style="width:16px;height:16px;"></i> Share
+                                </button>
+                                <button class="btn btn-secondary" id="fullscreen-btn" onclick="enterFullscreen()" style="padding: 6px 12px;">
+                                    <i data-lucide="maximize" style="width:16px;height:16px;"></i>
+                                </button>
                                 <button id="customize-btn" class="btn btn-primary">
                                     <i data-lucide="edit-3"></i> Customise
                                 </button>
@@ -568,7 +595,7 @@
                                                     <div class="ms-counters">
                                                         <div class="mini-counter">
                                                             <div class="mc-label">% Passed</div>
-                                                            <div class="circle-counter cc-green">142%</div>
+                                                            <div class="circle-counter cc-green">87.3%</div>
                                                         </div>
                                                         <div class="mini-counter">
                                                             <div class="mc-label">% Failed</div>
@@ -620,7 +647,7 @@
                                                     <div class="ms-counters">
                                                         <div class="mini-counter">
                                                             <div class="mc-label">% Passed</div>
-                                                            <div class="circle-counter cc-green">142%</div>
+                                                            <div class="circle-counter cc-green">82.1%</div>
                                                         </div>
                                                         <div class="mini-counter">
                                                             <div class="mc-label">% Failed</div>
@@ -873,8 +900,8 @@
 
 
 
-                            <!-- ==================== SCREEN 3F: Fullscreen Mode ==================== -->
-                            <div </div>
+                            <!-- Main Grid -->
+                            <div id="main-grid-container">
                                 <div class="grid-stack" id="main-grid">
                                     <!-- Widgets dynamically loaded here -->
                                 </div>
@@ -1078,7 +1105,7 @@
                                     <tr>
                                         <td>Defect Trend</td>
                                         <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Defects</td>
                                         <td>4</td>
                                         <td>2 hours ago</td>
                                         <td><span class="badge badge-success"
@@ -1095,7 +1122,7 @@
                                     <tr>
                                         <td>Releases</td>
                                         <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Releases</td>
                                         <td>2</td>
                                         <td>1 day ago</td>
                                         <td><span class="badge badge-success"
@@ -1111,8 +1138,8 @@
                                     </tr>
                                     <tr>
                                         <td>Test Cases</td>
-                                        <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Test Cases</td>
                                         <td>2</td>
                                         <td>3 days ago</td>
                                         <td><span class="badge badge-success"
@@ -1145,7 +1172,7 @@
                                     </tr>
                                     <tr>
                                         <td>Batches</td>
-                                        <td>Ian Charlton</td>
+                                        <td>Swathi Devi</td>
                                         <td>Custom</td>
                                         <td>3</td>
                                         <td>2 weeks ago</td>
@@ -1166,66 +1193,46 @@
                                         <td>Custom</td>
                                         <td>6</td>
                                         <td>1 month ago</td>
-                                        <td><span class="badge badge-success"
-                                                style="background:#43A047">Published</span></td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Mini-Dashboard Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Mini-Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Defect Lifecycle</td>
                                         <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Defects</td>
                                         <td>5</td>
                                         <td>2 hours ago</td>
-                                        <td><span class="badge badge-success"
-                                                style="background:#43A047">Published</span></td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Defect Lifecycle Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Defect Lifecycle Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Test Execution Health</td>
-                                        <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Test Cases</td>
                                         <td>4</td>
                                         <td>5 hours ago</td>
-                                        <td><span class="badge badge-success"
-                                                style="background:#43A047">Published</span></td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Test Execution Health Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Test Execution Health Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Release Health</td>
                                         <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Releases</td>
                                         <td>4</td>
                                         <td>1 day ago</td>
-                                        <td><span class="badge badge-success"
-                                                style="background:#43A047">Published</span></td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Release Health Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Release Health Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1236,29 +1243,20 @@
                                         <td>2 days ago</td>
                                         <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Requirement Traceability Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Requirement Traceability Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Test Case Quality</td>
-                                        <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Swathi Devi</td>
+                                        <td>Test Cases</td>
                                         <td>4</td>
                                         <td>3 days ago</td>
-                                        <td><span class="badge badge-success"
-                                                style="background:#43A047">Published</span></td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Test Case Quality Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Test Case Quality Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1269,51 +1267,39 @@
                                         <td>4 days ago</td>
                                         <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete User Productivity Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete User Productivity Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Batch Scheduling</td>
-                                        <td>Ian Charlton</td>
+                                        <td>Swathi Devi</td>
                                         <td>Custom</td>
                                         <td>4</td>
                                         <td>5 days ago</td>
-                                        <td><span class="badge badge-success"
-                                                style="background:#43A047">Published</span></td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Published</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Batch Scheduling Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Batch Scheduling Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Root Cause Analysis</td>
                                         <td>Ian Charlton</td>
-                                        <td>Custom</td>
+                                        <td>Defects</td>
                                         <td>4</td>
                                         <td>6 days ago</td>
                                         <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
                                         <td>
-                                            <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); "><i
-                                                    data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);"
-                                                onclick="openMockModal('Delete Root Cause Analysis Dashboard')"><i
-                                                    data-lucide="trash-2"></i></button>
+                                            <button class="icon-btn" title="Edit Details" onclick="switchView('edit-dashboard'); "><i data-lucide="edit-2"></i></button>
+                                            <button class="icon-btn" title="Delete" style="color:var(--color-error);" onclick="openMockModal('Delete Root Cause Analysis Dashboard')"><i data-lucide="trash-2"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </main>
+
                     <!-- VIEW: Create Dashboard -->
                     <main class="view-container hidden" id="view-create-dashboard">
                         <div class="view-header"
@@ -1437,7 +1423,7 @@
                                 <div style="display: flex; flex-direction: column; gap: 8px;">
                                     <label style="font-weight: 500; color: var(--text-color);">Dashboard Name <span
                                             style="color: var(--color-error);">*</span></label>
-                                    <input type="text" placeholder="e.g. Defect Trend Dashboard"
+                                    <input type="text" value="Defect Trend Dashboard"
                                         style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s;"
                                         onfocus="this.style.borderColor='var(--color-primary)'"
                                         onblur="this.style.borderColor='var(--border-color)'">
@@ -1446,10 +1432,10 @@
                                 <div style="display: flex; flex-direction: column; gap: 8px;">
                                     <label style="font-weight: 500; color: var(--text-color);">Description <span
                                             style="color: var(--color-error);">*</span></label>
-                                    <textarea placeholder="Monthly defect trend analysis with..." rows="3"
+                                    <textarea rows="3"
                                         style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; outline: none; transition: border-color 0.2s; resize: vertical;"
                                         onfocus="this.style.borderColor='var(--color-primary)'"
-                                        onblur="this.style.borderColor='var(--border-color)'"></textarea>
+                                        onblur="this.style.borderColor='var(--border-color)'">Monthly defect trend analysis with severity distribution, workflow stages, and exception indicators across active projects.</textarea>
                                 </div>
 
                                 <div style="display: flex; gap: 24px;">
@@ -1458,7 +1444,7 @@
                                                 style="color: var(--color-error);">*</span></label>
                                         <select
                                             style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: inherit; font-size: 14px; background-color: #fff; outline: none;">
-                                            <option>Defects</option>
+                                            <option selected>Defects</option>
                                             <option>Releases</option>
                                             <option>Test Cases</option>
                                             <option>Custom</option>
@@ -1584,25 +1570,50 @@
 
                     <!-- VIEW: Settings - Licence -->
                     <main class="view-container hidden" id="view-settings-licence">
-                        <div class="view-header">
-                            <h2>Licence Management</h2>
+                        <div class="view-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Licence Management</h2>
+                                <p class="text-muted">Manage software licences across all Pinnacle products.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openMockModal('Add New Licence')">
+                                <i data-lucide="plus"></i> Add Licence
+                            </button>
                         </div>
                         <div style="padding: var(--spacing-4);">
-                            <div class="placeholder-text">Licence Key: PNN-ENT-2026-X8Y2<br>Seats Used: 45 /
-                                50<br>Expiry: Dec
-                                31, 2026</div>
+                            <table class="data-table">
+                                <thead><tr><th>Licence Key</th><th>Product</th><th>Total Seats</th><th>Used Seats</th><th>Expiry Date</th><th>Status</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-ENT-2026-X8Y2</td><td>QMFactory</td><td>50</td><td>45</td><td>31 Dec 2026</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td></tr>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-AUT-2026-K3M7</td><td>Enginuity</td><td>30</td><td>28</td><td>31 Dec 2026</td><td><span class="badge" style="background:#FFB300; color:#333">Near Limit</span></td></tr>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-AUTH-2025-P1Q9</td><td>Authorise</td><td>20</td><td>20</td><td>15 Mar 2025</td><td><span class="badge" style="background:#E53935; color:#fff">Expired</span></td></tr>
+                                    <tr><td style="font-family: monospace; font-size: 13px;">PNN-DSH-2026-R4S6</td><td>Dashboard Analytics</td><td>100</td><td>67</td><td>30 Jun 2027</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </main>
 
                     <!-- VIEW: Settings - Roles -->
                     <main class="view-container hidden" id="view-settings-roles">
-                        <div class="view-header">
-                            <h2>Roles and Permissions</h2>
+                        <div class="view-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Roles and Permissions</h2>
+                                <p class="text-muted">Define user roles and control access to dashboards, data sources, and admin functions.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openMockModal('Add New Role')">
+                                <i data-lucide="plus"></i> Add Role
+                            </button>
                         </div>
                         <div style="padding: var(--spacing-4);">
-                            <div class="placeholder-text">Matrix Table: User Roles vs Action Permissions (View, Edit,
-                                Admin)
-                            </div>
+                            <table class="data-table">
+                                <thead><tr><th>Role Name</th><th>Users</th><th>Dashboard Access</th><th>Data Source Access</th><th>SQL Lab</th><th>Admin</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="font-weight: 500;">Platform Admin</td><td>3</td><td><span class="badge" style="background:#43A047; color:#fff">Full</span></td><td><span class="badge" style="background:#43A047; color:#fff">Full</span></td><td><span class="badge" style="background:#43A047; color:#fff">Yes</span></td><td><span class="badge" style="background:#43A047; color:#fff">Yes</span></td></tr>
+                                    <tr><td style="font-weight: 500;">Dashboard Admin</td><td>5</td><td><span class="badge" style="background:#43A047; color:#fff">Full</span></td><td><span class="badge" style="background:#1E3A8A; color:#fff">Read</span></td><td><span class="badge" style="background:#43A047; color:#fff">Yes</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                    <tr><td style="font-weight: 500;">QA Manager</td><td>12</td><td><span class="badge" style="background:#1E3A8A; color:#fff">View</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">None</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                    <tr><td style="font-weight: 500;">Team Member</td><td>35</td><td><span class="badge" style="background:#1E3A8A; color:#fff">View</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">None</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                    <tr><td style="font-weight: 500;">External Auditor</td><td>2</td><td><span class="badge" style="background:#FFB300; color:#333">Limited</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">None</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td><td><span class="badge" style="background:#9E9E9E; color:#fff">No</span></td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </main>
 
@@ -1610,22 +1621,43 @@
                     <main class="view-container hidden" id="view-settings-services">
                         <div class="view-header">
                             <h2>Service Catalogue</h2>
+                            <p class="text-muted">View all available platform services, their owners, SLAs, and operational status.</p>
                         </div>
                         <div style="padding: var(--spacing-4);">
-                            <div class="placeholder-text">Available Services: Auth Engine (99.9% uptime), Superset
-                                Instance
-                                (99.8% uptime)</div>
+                            <table class="data-table">
+                                <thead><tr><th>Service Name</th><th>Module</th><th>Owner</th><th>SLA Tier</th><th>Status</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Authentication Engine</td><td>Platform</td><td>Platform Team</td><td>Tier 1 — 99.9%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                    <tr><td>Dashboard Analytics</td><td>Superset</td><td>Ian Charlton</td><td>Tier 2 — 99.5%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                    <tr><td>Report Generator</td><td>QMFactory</td><td>Swathi Devi</td><td>Tier 2 — 99.5%</td><td><span class="badge" style="background:#FFB300; color:#333">Maintenance</span></td></tr>
+                                    <tr><td>Batch Scheduler</td><td>Enginuity</td><td>Platform Team</td><td>Tier 1 — 99.9%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                    <tr><td>Email Notification Service</td><td>Platform</td><td>Platform Team</td><td>Tier 3 — 99.0%</td><td><span class="badge" style="background:#43A047; color:#fff">Operational</span></td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </main>
 
                     <!-- VIEW: Settings - Projects -->
                     <main class="view-container hidden" id="view-settings-projects">
-                        <div class="view-header">
-                            <h2>Project Management</h2>
+                        <div class="view-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>Project Management</h2>
+                                <p class="text-muted">Manage all tenant projects — each project has its own users, dashboards, and data scope.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="openMockModal('Create New Project')">
+                                <i data-lucide="plus"></i> New Project
+                            </button>
                         </div>
                         <div style="padding: var(--spacing-4);">
-                            <div class="placeholder-text">Active Projects: Florence Health, Staging Sandpit, Core QA
-                            </div>
+                            <table class="data-table">
+                                <thead><tr><th>Project Name</th><th>Owner</th><th>Status</th><th>Users</th><th>Dashboards</th><th>Last Updated</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="font-weight: 500;">Florence Health</td><td>Ian Charlton</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td><td>24</td><td>8</td><td>2 hours ago</td></tr>
+                                    <tr><td style="font-weight: 500;">Staging Sandpit</td><td>Swathi Devi</td><td><span class="badge" style="background:#FFB300; color:#333">Onboarding</span></td><td>6</td><td>3</td><td>1 day ago</td></tr>
+                                    <tr><td style="font-weight: 500;">Core QA Platform</td><td>Ian Charlton</td><td><span class="badge" style="background:#43A047; color:#fff">Active</span></td><td>45</td><td>14</td><td>3 hours ago</td></tr>
+                                    <tr><td style="font-weight: 500;">Legacy Migration</td><td>Platform Team</td><td><span class="badge" style="background:#9E9E9E; color:#fff">Archived</span></td><td>0</td><td>2</td><td>3 months ago</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </main>
 
@@ -1633,9 +1665,55 @@
                     <main class="view-container hidden" id="view-settings-requests">
                         <div class="view-header">
                             <h2>Service Requests</h2>
+                            <p class="text-muted">Submit and track support requests — access changes, new dashboard requests, bug reports.</p>
                         </div>
-                        <div style="padding: var(--spacing-4);">
-                            <div class="placeholder-text">Ticket Queue: Pending Access Approvals, New Dashboard Requests
+                        <div style="padding: var(--spacing-4); display: flex; flex-direction: column; gap: 24px;">
+                            <!-- New Request Form -->
+                            <div style="border: 1px solid var(--color-border); border-radius: 4px; padding: 20px; background: var(--color-bg-surface);">
+                                <h3 style="margin-bottom: 16px; font-size: 16px;">Submit New Request</h3>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <label style="font-size: 13px; font-weight: 500;">Request Type</label>
+                                        <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                                            <option>New Dashboard Request</option>
+                                            <option>Access Change</option>
+                                            <option>Bug Report</option>
+                                            <option>Data Source Request</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <label style="font-size: 13px; font-weight: 500;">Priority</label>
+                                        <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                                            <option>Low</option>
+                                            <option selected>Medium</option>
+                                            <option>High</option>
+                                            <option>Critical</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 16px;">
+                                    <label style="font-size: 13px; font-weight: 500;">Subject</label>
+                                    <input type="text" placeholder="Brief summary of your request..." style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 16px;">
+                                    <label style="font-size: 13px; font-weight: 500;">Description</label>
+                                    <textarea rows="3" placeholder="Describe your request in detail..." style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border); resize: vertical;"></textarea>
+                                </div>
+                                <button class="btn btn-primary" style="margin-top: 16px;" onclick="showToast('Service request submitted successfully')">
+                                    <i data-lucide="send"></i> Submit Request
+                                </button>
+                            </div>
+                            <!-- Recent Requests Table -->
+                            <div>
+                                <h3 style="margin-bottom: 12px; font-size: 16px;">Recent Requests</h3>
+                                <table class="data-table">
+                                    <thead><tr><th>Ticket ID</th><th>Subject</th><th>Priority</th><th>Status</th><th>Last Updated</th></tr></thead>
+                                    <tbody>
+                                        <tr><td style="font-family: monospace;">SR-0042</td><td>Add User Productivity dashboard to prod</td><td><span class="badge" style="background:#FFB300; color:#333">Medium</span></td><td><span class="badge" style="background:#1E3A8A; color:#fff">In Progress</span></td><td>3 hours ago</td></tr>
+                                        <tr><td style="font-family: monospace;">SR-0041</td><td>Grant SQL Lab access for QA team</td><td><span class="badge" style="background:#E53935; color:#fff">High</span></td><td><span class="badge" style="background:#FFB300; color:#333">Pending Approval</span></td><td>1 day ago</td></tr>
+                                        <tr><td style="font-family: monospace;">SR-0039</td><td>Fix date filter not resetting on Defect Trend</td><td><span class="badge" style="background:#43A047; color:#fff">Low</span></td><td><span class="badge" style="background:#43A047; color:#fff">Resolved</span></td><td>3 days ago</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </main>
@@ -1660,6 +1738,89 @@
             <button class="btn btn-secondary" onclick="closeMockModal()">Cancel</button>
             <button class="btn btn-primary"
                 onclick="closeMockModal(); showToast('Action completed successfully');">Confirm Action</button>
+        </div>
+    </div>
+
+    <!-- EXPORT MODAL (Screen 3D) -->
+    <div class="modal-overlay hidden" id="export-modal">
+        <div class="modal" style="width: 460px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">📤 Export Dashboard</h3>
+                <button class="icon-btn" onclick="document.getElementById('export-modal').classList.add('hidden')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Format <span style="color: var(--color-error);">*</span></label>
+                    <select style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border);">
+                        <option>PDF</option>
+                        <option>PNG</option>
+                        <option>CSV</option>
+                    </select>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                        <input type="checkbox" checked> Include current filters
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                        <input type="checkbox" checked> Include data tables
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                        <input type="checkbox"> Include raw data (CSV attachment)
+                    </label>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Paper Size</label>
+                    <div style="display: flex; gap: 16px;">
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 14px; cursor: pointer;"><input type="radio" name="paper-size"> A4</label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 14px; cursor: pointer;"><input type="radio" name="paper-size" checked> Letter</label>
+                        <label style="display: flex; align-items: center; gap: 4px; font-size: 14px; cursor: pointer;"><input type="radio" name="paper-size"> Landscape</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="document.getElementById('export-modal').classList.add('hidden')">Cancel</button>
+                <button class="btn btn-primary" onclick="document.getElementById('export-modal').classList.add('hidden'); showToast('Dashboard exported successfully')">
+                    <i data-lucide="download" style="width:16px;height:16px;"></i> Export
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHARE MODAL (Screen 3E) -->
+    <div class="modal-overlay hidden" id="share-modal">
+        <div class="modal" style="width: 520px; max-width: 90vw;">
+            <div class="modal-header">
+                <h3 style="margin: 0;">🔗 Share Dashboard</h3>
+                <button class="icon-btn" onclick="document.getElementById('share-modal').classList.add('hidden')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Dashboard URL</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" id="share-url" value="https://pinnacle.io/dashboard/defect-trend" readonly
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border); flex: 1; background: #f9fafb; font-size: 13px; font-family: monospace;">
+                        <button class="btn btn-secondary" style="padding: 6px 12px;" onclick="navigator.clipboard.writeText(document.getElementById('share-url').value); showToast('Link copied to clipboard')">
+                            <i data-lucide="copy" style="width:16px;height:16px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 13px; font-weight: 500;">Embed Code (iframe)</label>
+                    <div style="display: flex; gap: 8px; align-items: flex-start;">
+                        <textarea id="share-embed" readonly rows="3"
+                            style="padding: 8px; border-radius: 4px; border: 1px solid var(--color-border); flex: 1; background: #f9fafb; font-size: 12px; font-family: monospace; resize: none;">&lt;iframe src="https://pinnacle.io/embed/defect-trend" width="100%" height="600"&gt;&lt;/iframe&gt;</textarea>
+                        <button class="btn btn-secondary" style="padding: 6px 12px;" onclick="navigator.clipboard.writeText(document.getElementById('share-embed').value); showToast('Embed code copied to clipboard')">
+                            <i data-lucide="copy" style="width:16px;height:16px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer;">
+                    <input type="checkbox" checked> Include current filter state
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="document.getElementById('share-modal').classList.add('hidden')">Close</button>
+            </div>
         </div>
     </div>
 
@@ -2031,6 +2192,23 @@ function syncDatasource(btn) {
         }
     }, 2000);
 }
+
+// Fullscreen Mode (Screen 3F)
+function enterFullscreen() {
+    const dashArea = document.querySelector('.dashboard-area') || document.getElementById('view-dashboard');
+    if (dashArea && dashArea.requestFullscreen) {
+        dashArea.requestFullscreen().then(() => {
+            showToast('Press ESC to exit fullscreen');
+        }).catch(() => {
+            showToast('Fullscreen not supported in this browser');
+        });
+    }
+}
+document.addEventListener('fullscreenchange', function() {
+    if (!document.fullscreenElement) {
+        // Exited fullscreen
+    }
+});
 </script>
 
 </body>
