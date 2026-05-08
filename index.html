@@ -5,11 +5,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pinnacle Dashboard Prototype</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
     <link rel="stylesheet" href="style.css">
+    
+    <style id="theme-overrides">
+        /* Global Overrides */
+        :root {
+            --font-family: 'Raleway', sans-serif;
+            --color-primary: #032772;
+            --color-primary-hover: #0d398f;
+            --color-sidebar-bg: #002060;
+            --color-bg-app: #f4f7f9;
+            --border-radius: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        
+        body {
+            background-color: var(--color-bg-app);
+            font-family: var(--font-family);
+        }
+
+        h1, h2, h3, h4, h5, h6, .view-header h2, .auth-title {
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background: var(--color-primary) !important;
+            box-shadow: var(--shadow-sm);
+            color: #fff !important;
+        }
+        .btn-primary:hover {
+            background: var(--color-primary-hover) !important;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-secondary {
+            background: #f2f2f2 !important;
+            border: 1px solid #cfcfcf !important;
+            color: #202124 !important;
+        }
+        .btn-secondary:hover {
+            background: #f8f8f8 !important;
+        }
+
+        /* Data Table */
+        .data-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            background: #fff;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #eef0f4;
+        }
+        .data-table th, .data-table td {
+            border-right: none;
+            border-left: none;
+            border-bottom: 1px solid #eef0f4;
+            padding: 12px 16px;
+        }
+        .data-table th {
+            background: #fcfcfc;
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7280;
+        }
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        .data-table tbody tr:hover td {
+            background: #f9fafb;
+        }
+        
+        /* Layout & Header */
+        .pn-header {
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .pn-env-label {
+            font-family: 'Poppins', sans-serif;
+            color: #64bfe8;
+            font-weight: 600;
+        }
+        .sidebar {
+            background: var(--color-sidebar-bg) !important;
+        }
+        .nav-item.active {
+            background: rgba(255,255,255,0.15) !important;
+            color: #fff !important;
+            font-weight: 600;
+            border-left: none !important;
+            border-radius: 6px;
+            margin: 0 8px;
+            width: calc(100% - 16px);
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.08) !important;
+            border-radius: 6px;
+            margin: 0 8px;
+            width: calc(100% - 16px);
+            border-left: none !important;
+        }
+
+        /* Dashboard Grid Items */
+        .grid-stack-item-content {
+            border-radius: 12px !important;
+            border: 1px solid #f0f0f0 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+            background: #fff !important;
+            transition: box-shadow 0.2s;
+        }
+        .grid-stack-item-content:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+        }
+        
+        /* Modals */
+        .modal {
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -97,8 +227,7 @@
                     <img class="pn-logo" src="https://dashboard-prototype-eta.vercel.app/assets/logo.png"
                         alt="Pinnacle">
                     <span class="pn-env-label">QA Environment</span>
-                    <span id="breadcrumb"
-                        style="margin-left: 20px; font-size: 13px; color: var(--color-text-muted);"></span>
+                    
                 </div>
                 <div class="pn-header-right">
                     <!-- Info icon -->
@@ -843,19 +972,12 @@
                                         <td>WorkBench</td>
                                         <td>MS SQL Server</td>
                                         <td>sql-prod-01.internal</td>
-                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
-                                        </td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
                                         <td>142</td>
                                         <td>
-                                            <button class="icon-btn" title="Test Connection"
-                                                onclick="showToast('✅ Connection Successful')"><i
-                                                    data-lucide="plug"></i></button>
                                             <button class="icon-btn" title="Edit Config"
                                                 onclick="openMockModal('Edit WorkBench Source')"><i
                                                     data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Sync Tables"
-                                                onclick="showToast('🔄 Syncing Tables...')"><i
-                                                    data-lucide="refresh-cw"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete WorkBench Source')"><i
                                                     data-lucide="trash-2"></i></button>
@@ -865,18 +987,15 @@
                                         <td>AutomationOR</td>
                                         <td>PostgreSQL</td>
                                         <td>db-auto-02.internal</td>
-                                        <td><span class="badge badge-error">Failing</span></td>
-                                        <td>56</td>
+                                        <td><span class="badge badge-error">Error</span></td>
+                                        <td data-actual-count="56">0</td>
                                         <td>
-                                            <button class="icon-btn" title="Test Connection"
-                                                onclick="showToast('❌ Connection Failed: Timeout')"><i
-                                                    data-lucide="plug"></i></button>
+                                            <button class="icon-btn" title="Retry Connection"
+                                                onclick="syncDatasource(this)"><i
+                                                    data-lucide="refresh-cw"></i></button>
                                             <button class="icon-btn" title="Edit Config"
                                                 onclick="openMockModal('Edit AutomationOR Source')"><i
                                                     data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Sync Tables"
-                                                onclick="showToast('🔄 Syncing Tables...')"><i
-                                                    data-lucide="refresh-cw"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete AutomationOR Source')"><i
                                                     data-lucide="trash-2"></i></button>
@@ -886,19 +1005,12 @@
                                         <td>QM Factory</td>
                                         <td>PostgreSQL</td>
                                         <td>db-qmf-01.internal</td>
-                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
-                                        </td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
                                         <td>210</td>
                                         <td>
-                                            <button class="icon-btn" title="Test Connection"
-                                                onclick="showToast('✅ Connection Successful')"><i
-                                                    data-lucide="plug"></i></button>
                                             <button class="icon-btn" title="Edit Config"
                                                 onclick="openMockModal('Edit QM Factory Source')"><i
                                                     data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Sync Tables"
-                                                onclick="showToast('🔄 Syncing Tables...')"><i
-                                                    data-lucide="refresh-cw"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete QM Factory Source')"><i
                                                     data-lucide="trash-2"></i></button>
@@ -908,19 +1020,12 @@
                                         <td>Enginuity</td>
                                         <td>MySQL</td>
                                         <td>db-eng-01.internal</td>
-                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
-                                        </td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
                                         <td>85</td>
                                         <td>
-                                            <button class="icon-btn" title="Test Connection"
-                                                onclick="showToast('✅ Connection Successful')"><i
-                                                    data-lucide="plug"></i></button>
                                             <button class="icon-btn" title="Edit Config"
                                                 onclick="openMockModal('Edit Enginuity Source')"><i
                                                     data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Sync Tables"
-                                                onclick="showToast('🔄 Syncing Tables...')"><i
-                                                    data-lucide="refresh-cw"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Enginuity Source')"><i
                                                     data-lucide="trash-2"></i></button>
@@ -930,19 +1035,12 @@
                                         <td>Authorise</td>
                                         <td>MS SQL Server</td>
                                         <td>sql-auth-01.internal</td>
-                                        <td><span class="badge badge-success" style="background:#43A047">Healthy</span>
-                                        </td>
+                                        <td><span class="badge badge-success" style="background:#43A047">Connected</span></td>
                                         <td>34</td>
                                         <td>
-                                            <button class="icon-btn" title="Test Connection"
-                                                onclick="showToast('✅ Connection Successful')"><i
-                                                    data-lucide="plug"></i></button>
                                             <button class="icon-btn" title="Edit Config"
                                                 onclick="openMockModal('Edit Authorise Source')"><i
                                                     data-lucide="edit-2"></i></button>
-                                            <button class="icon-btn" title="Sync Tables"
-                                                onclick="showToast('🔄 Syncing Tables...')"><i
-                                                    data-lucide="refresh-cw"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Authorise Source')"><i
                                                     data-lucide="trash-2"></i></button>
@@ -961,7 +1059,7 @@
                         </div>
                         <div style="padding: var(--spacing-4);">
                             <button class="btn btn-primary" style="margin-bottom: var(--spacing-3);"
-                                onclick="switchView('create-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Create Dashboard';">
+                                onclick="switchView('create-dashboard'); ">
                                 <i data-lucide="plus"></i> New Dashboard
                             </button>
                             <table class="data-table">
@@ -987,7 +1085,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Defect Trend Dashboard')"><i
@@ -1004,7 +1102,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Releases Dashboard')"><i
@@ -1021,7 +1119,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Test Cases Dashboard')"><i
@@ -1038,7 +1136,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Quadrants Dashboard')"><i
@@ -1055,7 +1153,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Batches Dashboard')"><i
@@ -1072,7 +1170,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Mini-Dashboard Dashboard')"><i
@@ -1089,7 +1187,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Defect Lifecycle Dashboard')"><i
@@ -1106,7 +1204,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Test Execution Health Dashboard')"><i
@@ -1123,7 +1221,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Release Health Dashboard')"><i
@@ -1139,7 +1237,7 @@
                                         <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Requirement Traceability Dashboard')"><i
@@ -1156,7 +1254,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Test Case Quality Dashboard')"><i
@@ -1172,7 +1270,7 @@
                                         <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete User Productivity Dashboard')"><i
@@ -1189,7 +1287,7 @@
                                                 style="background:#43A047">Published</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Batch Scheduling Dashboard')"><i
@@ -1205,7 +1303,7 @@
                                         <td><span class="badge" style="background:#9E9E9E; color:#fff">Draft</span></td>
                                         <td>
                                             <button class="icon-btn" title="Edit Details"
-                                                onclick="switchView('edit-dashboard'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards / Edit Dashboard';"><i
+                                                onclick="switchView('edit-dashboard'); "><i
                                                     data-lucide="edit-2"></i></button>
                                             <button class="icon-btn" title="Delete" style="color:var(--color-error);"
                                                 onclick="openMockModal('Delete Root Cause Analysis Dashboard')"><i
@@ -1223,7 +1321,7 @@
                             <div>
                                 <button class="btn btn-secondary"
                                     style="margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 8px;"
-                                    onclick="switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">
+                                    onclick="switchView('manage-dashboards'); ">
                                     <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back
                                 </button>
                                 <h2>Create Dashboard</h2>
@@ -1231,10 +1329,10 @@
                             </div>
                             <div style="display: flex; gap: 12px; margin-top: 36px;">
                                 <button class="btn btn-secondary"
-                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Save
+                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); ">Save
                                     Draft</button>
                                 <button class="btn btn-primary"
-                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Publish</button>
+                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); ">Publish</button>
                             </div>
                         </div>
 
@@ -1316,7 +1414,7 @@
                             <div>
                                 <button class="btn btn-secondary"
                                     style="margin-bottom: var(--spacing-3); display: flex; align-items: center; gap: 8px;"
-                                    onclick="switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">
+                                    onclick="switchView('manage-dashboards'); ">
                                     <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back
                                 </button>
                                 <h2>Edit Dashboard</h2>
@@ -1324,10 +1422,10 @@
                             </div>
                             <div style="display: flex; gap: 12px; margin-top: 36px;">
                                 <button class="btn btn-secondary"
-                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Save
+                                    onclick="showToast('Dashboard saved as draft'); switchView('manage-dashboards'); ">Save
                                     Draft</button>
                                 <button class="btn btn-primary"
-                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); document.querySelector('.pn-breadcrumbs').innerHTML = 'Dashboard Gallery / Manage Dashboards';">Publish</button>
+                                    onclick="showToast('Dashboard published and visible to users'); switchView('manage-dashboards'); ">Publish</button>
                             </div>
                         </div>
 
@@ -1899,6 +1997,41 @@
             </div>
         </div>
     </div>
+
+
+<style>
+@keyframes spin { 100% { transform: rotate(360deg); } }
+</style>
+<script>
+function syncDatasource(btn) {
+    if (btn.disabled) return;
+    const originalContent = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" style="animation: spin 1s linear infinite;"></i>';
+    lucide.createIcons();
+    
+    setTimeout(() => {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+        lucide.createIcons();
+        showToast('✅ Connection Retried Successfully');
+        // Update the badge to Connected
+        const tr = btn.closest('tr');
+        if (tr) {
+            const statusCell = tr.querySelectorAll('td')[3];
+            if (statusCell) {
+                statusCell.innerHTML = '<span class="badge badge-success" style="background:#43A047">Connected</span>';
+            }
+            const syncedCell = tr.querySelectorAll('td')[4];
+            if (syncedCell && syncedCell.hasAttribute('data-actual-count')) {
+                syncedCell.innerHTML = syncedCell.getAttribute('data-actual-count');
+            }
+            // Remove the sync button
+            btn.remove();
+        }
+    }, 2000);
+}
+</script>
 
 </body>
 
