@@ -1,6 +1,6 @@
 // --- Data Definitions ---
 
-function createWidgetContent(title, desc, chartType = 'bar', chartKey = '') {
+function createWidgetContent(title, desc, chartType = 'bar', chartKey = '', labels = []) {
     let contentHtml = '';
 
     if (chartType === 'kpi') {
@@ -25,8 +25,8 @@ function createWidgetContent(title, desc, chartType = 'bar', chartKey = '') {
             </div>`;
     } else if (chartType === 'table') {
         contentHtml = `
-            <div style="overflow-y: auto; height: 100%; padding: 0 4px;">
-                <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;">
+            <div style="height: 100%; overflow: hidden; display: flex; flex-direction: column;">
+                <table class="data-table" style="width: 100%; font-size: 11px;">
                     <thead><tr style="border-bottom: 1px solid #f0f0f0; color: #8c8c8c;"><th style="padding: 8px 4px;">ID</th><th style="padding: 8px 4px;">Status</th><th style="padding: 8px 4px;">Date</th></tr></thead>
                     <tbody>
                         ${Array.from({ length: 4 }, (_, i) => `<tr style="border-bottom: 1px solid #fafafa;"><td style="padding: 8px 4px; font-weight: 500;">#${100 + i}</td><td style="padding: 8px 4px; color: ${i % 2 === 0 ? '#1890ff' : '#faad14'};">${i % 2 === 0 ? 'Active' : 'Pending'}</td><td style="padding: 8px 4px; color: #555;">2026-03-${10 + i}</td></tr>`).join('')}
@@ -41,22 +41,23 @@ function createWidgetContent(title, desc, chartType = 'bar', chartKey = '') {
                 <div style="display: flex; align-items: center; gap: 12px;"><span style="width: 60px; font-size: 11px; color: #555;">Sprint 3</span><div style="flex: 1; height: 12px; background: #f0f0f0; border-radius: 6px; position: relative;"><div style="position: absolute; left: 70%; width: 20%; height: 100%; background: #faad14; border-radius: 6px;"></div></div></div>
             </div>`;
     } else if (chartType === 'circle-kpi') {
-        const numCircles = parseInt(chartKey) || 4;
+        const numCircles = parseInt(chartKey) || labels.length || 4;
         let circlesHtml = '';
         const colors = ['#e53935', '#43a047', '#ffb300', '#1e3a8a', '#8e24aa', '#e91e63'];
         for (let i = 0; i < numCircles; i++) {
             const color = colors[i % colors.length];
+            const labelText = labels[i] || `KPI ${i + 1}`;
             circlesHtml += `
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                    <div style="width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: ${color}20; color: ${color}; border: 2px solid ${color}; font-weight: 600; font-size: 14px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 45px; flex: 1;">
+                    <div style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: ${color}20; color: ${color}; border: 2px solid ${color}; font-weight: 600; font-size: 12px;">
                         ${Math.floor(Math.random() * 50) + 1}
                     </div>
-                    <div style="font-size: 10px; color: #8c8c8c; text-align: center; white-space: nowrap; max-width: 50px; overflow: hidden; text-overflow: ellipsis;">KPI ${i + 1}</div>
+                    <div style="font-size: 9px; color: #8c8c8c; text-align: center; max-width: 80px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.2;">${labelText}</div>
                 </div>
             `;
         }
         contentHtml = `
-            <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; flex-wrap: wrap; align-content: center; gap: 8px; overflow: hidden; padding: 4px;">
+            <div style="display: flex; justify-content: space-evenly; align-items: center; height: 100%; flex-wrap: wrap; align-content: center; gap: 4px; overflow: hidden; padding: 2px;">
                 ${circlesHtml}
             </div>`;
     } else if (chartType === 'gauge') {
@@ -91,11 +92,11 @@ function createWidgetContent(title, desc, chartType = 'bar', chartKey = '') {
             <div class="widget-title">${title}</div>
             <div class="widget-drag-handle"><i data-lucide="grip-horizontal"></i></div>
         </div>
-        <div class="widget-body" style="position: relative; height: calc(100% - 36px); width: 100%; display: flex; flex-direction: column; padding: 12px;">
+        <div class="widget-body" style="position: relative; height: calc(100% - 36px); width: 100%; display: flex; flex-direction: column; padding: 8px;">
             <div style="flex-grow: 1; min-height: 0; position: relative;">
                 ${contentHtml}
             </div>
-            <div class="text-muted" style="font-size: 11px; text-align: center; margin-top: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 8px; border-top: 1px solid #f0f0f0;">${desc}</div>
+            <div class="text-muted" style="font-size: 11px; text-align: center; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 4px; border-top: 1px solid #f0f0f0;">${desc}</div>
         </div>
     `;
 }
@@ -108,8 +109,8 @@ const dashboardConfigs = {
         widgets: [
             { x: 0, y: 0, w: 4, h: 4, content: createWidgetContent('Defect Workflow', 'Distribution across lifecycle stages', 'doughnut', 'chart-donut') },
             { x: 4, y: 0, w: 8, h: 4, content: createWidgetContent('Severity Trend', 'Monthly defect count by severity', 'stacked-bar', 'chart-bar') },
-            { x: 0, y: 4, w: 8, h: 2, content: createWidgetContent('Exception Categories', '6 specific defect categories needing attention', 'circle-kpi', '6') },
-            { x: 8, y: 4, w: 4, h: 2, content: createWidgetContent('Risk Scores', 'Total and average risk scores', 'circle-kpi', '2') }
+            { x: 0, y: 4, w: 8, h: 3, content: createWidgetContent('Exception Categories', '6 specific defect categories needing attention', 'circle-kpi', '6', ['Open Defects not linked to Failed tests', 'Open Defects not linked to Any tests', 'New Defects not modified in Last Week', 'Open Defects not modified in Last Week', 'New & Open Defects Assigned to Inactive User', 'Deleted Defects']) },
+            { x: 8, y: 4, w: 4, h: 3, content: createWidgetContent('Risk Scores', 'Total and average risk scores', 'circle-kpi', '2', ['Total Risk', 'Avg Risk']) }
         ]
     },
     'releases': {
@@ -117,7 +118,7 @@ const dashboardConfigs = {
         desc: 'Track release lifecycle status and identify bottlenecks.',
         widgets: [
             { x: 0, y: 0, w: 6, h: 4, content: createWidgetContent('Release Workflow', 'Releases by stage: Draft to Deployed', 'doughnut', 'chart-release-wf') },
-            { x: 6, y: 0, w: 6, h: 4, content: createWidgetContent('Key Metrics', 'Total releases, approved %, deployed %', 'circle-kpi', '4') }
+            { x: 6, y: 0, w: 6, h: 4, content: createWidgetContent('Key Metrics', 'Total releases, approved %, deployed %', 'circle-kpi', '4', ['Total Releases', 'Approved %', 'Deployed %', 'Avg Duration']) }
         ]
     },
     'test-cases': {
@@ -125,8 +126,8 @@ const dashboardConfigs = {
         desc: 'Overview of test case inventory and execution readiness.',
         widgets: [
             { x: 0, y: 0, w: 6, h: 4, content: createWidgetContent('TC Workflow', 'Test cases by stage', 'doughnut', 'chart-tc-wf') },
-            { x: 6, y: 0, w: 3, h: 4, content: createWidgetContent('Custom Metrics', 'Key execution metrics', 'circle-kpi', '3') },
-            { x: 9, y: 0, w: 3, h: 4, content: createWidgetContent('Exceptions', 'Blocked and failed test cases', 'circle-kpi', '2') }
+            { x: 6, y: 0, w: 3, h: 4, content: createWidgetContent('Custom Metrics', 'Key execution metrics', 'circle-kpi', '3', ['Total Tests', 'Automated %', 'Passed %']) },
+            { x: 9, y: 0, w: 3, h: 4, content: createWidgetContent('Exceptions', 'Blocked and failed test cases', 'circle-kpi', '2', ['Blocked', 'No Coverage']) }
         ]
     },
     'quadrants': {
@@ -145,7 +146,7 @@ const dashboardConfigs = {
         widgets: [
             { x: 0, y: 0, w: 4, h: 4, content: createWidgetContent('Batch Workflow', 'Batches by stage', 'doughnut', 'chart-batch-wf') },
             { x: 4, y: 0, w: 8, h: 4, content: createWidgetContent('Daily Frequency', 'Tests executed per day', 'bar', 'chart-batch-freq') },
-            { x: 0, y: 4, w: 12, h: 2, content: createWidgetContent('Exceptions', 'Failed batches, timeout count, retry rate', 'circle-kpi', '5') }
+            { x: 0, y: 4, w: 12, h: 2, content: createWidgetContent('Exceptions', 'Failed batches, timeout count, retry rate', 'circle-kpi', '5', ['Failed', 'Aborted', 'Delayed', 'Retried', 'Timeouts']) }
         ]
     },
     'mini': {
@@ -205,7 +206,7 @@ const dashboardConfigs = {
             { x: 0, y: 0, w: 8, h: 4, content: createWidgetContent('Coverage Gap Analysis', 'Requirements with 0 test cases', 'bar', 'sd3-chart1') },
             { x: 8, y: 0, w: 4, h: 4, content: createWidgetContent('ISO Classification Breakdown', 'Requirements by standard', 'doughnut', 'sd4-chart1') },
             { x: 0, y: 4, w: 8, h: 4, content: createWidgetContent('Business Importance Matrix', 'Importance x Coverage heatmap', 'heatmap', 'sd4-chart3') },
-            { x: 8, y: 4, w: 4, h: 4, content: createWidgetContent('Traceability Summary', 'Total reqs, covered %, average TC/req', 'circle-kpi', '4') }
+            { x: 8, y: 4, w: 4, h: 4, content: createWidgetContent('Traceability Summary', 'Total reqs, covered %, average TC/req', 'circle-kpi', '4', ['Total Reqs', 'Covered %', 'Avg TC/Req', 'Orphaned']) }
         ]
     },
     'sd5': {
@@ -485,12 +486,12 @@ const chartDataStore = {
     'mini-releases': {
         type: 'doughnut',
         data: { labels: ['Active', 'Planned', 'Deployed'], datasets: [{ data: [1, 0, 12], backgroundColor: ['#64bfe8', '#363940', '#71c09a'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: true, position: 'bottom' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: true, position: 'right' } } }
     },
     'mini-execution': {
         type: 'bar',
         data: { labels: ['Passed', 'Failed', 'Not Run'], datasets: [{ label: '%', data: [28.57, 0, 71.43], backgroundColor: ['#71c09a', '#dd0000', '#64bfe8'] }] },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '% (Percentage)' } } }, plugins: { legend: { display: false } } }
     },
     'mini-tc-priority': {
         type: 'bar',
@@ -501,12 +502,12 @@ const chartDataStore = {
                 { label: 'Bronze', data: [12], backgroundColor: '#cd7f32' }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { stacked: true }, y: { stacked: true, display: false } }, plugins: { legend: { display: true, position: 'bottom' } } }
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { stacked: true, title: { display: true, text: 'Test Cases' } }, y: { stacked: true, display: false } }, plugins: { legend: { display: true, position: 'right' } } }
     },
     'chart-donut': {
         type: 'doughnut',
         data: { labels: ['New', 'Open', 'Deferred', 'Closed'], datasets: [{ data: [1357, 98, 12, 64], backgroundColor: [PinnacleColors.new, PinnacleColors.open, PinnacleColors.deferred, PinnacleColors.closed], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: true, position: 'right' } } }
     },
     'chart-bar': {
         type: 'bar',
@@ -518,27 +519,27 @@ const chartDataStore = {
                 { label: 'Severity 4', data: [20], backgroundColor: PinnacleColors.sev4 }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } }, plugins: { legend: { position: 'top' } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Defects' } } }, plugins: { legend: { position: 'top' } } }
     },
     'chart-release-wf': {
         type: 'doughnut',
         data: { labels: ['Draft', 'Ready For Review', 'Rework Required', 'Approved', 'Deployed'], datasets: [{ data: [67, 6, 1, 5, 11], backgroundColor: ['#faad14', '#52c41a', '#722ed1', '#1890ff', '#F6B168'], borderWidth: 2, borderColor: '#fff' }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: true, position: 'right' } } }
     },
     'chart-tc-wf': {
         type: 'doughnut',
         data: { labels: ['Draft', 'Ready For Review', 'Rework Required', 'Approved', 'Retired'], datasets: [{ data: [1380, 17, 12, 26, 18], backgroundColor: ['#faad14', '#52c41a', '#722ed1', '#1890ff', '#999'], borderWidth: 2, borderColor: '#fff' }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: true, position: 'right' } } }
     },
     'chart-batch-wf': {
         type: 'doughnut',
         data: { labels: ['Configuring', 'Scheduling', 'Executing', 'Completed'], datasets: [{ data: [70, 10, 46, 1169], backgroundColor: ['#faad14', '#ff4d4f', '#52c41a', '#722ed1'], borderWidth: 2, borderColor: '#fff' }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: true, position: 'right' } } }
     },
     'chart-batch-freq': {
         type: 'bar',
         data: { labels: ['05 Mar 2026'], datasets: [{ label: 'Test Cases', data: [1], backgroundColor: 'rgba(24,144,255,0.6)', borderColor: '#1890ff', borderWidth: 1 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Batches' } } }, plugins: { legend: { display: false } } }
     },
     'spark-4': {
         type: 'bubble',
@@ -548,7 +549,7 @@ const chartDataStore = {
     'sd1-chart1': {
         type: 'bar',
         data: { labels: ['Sev 1', 'Sev 2', 'Sev 3', 'Sev 4'], datasets: [{ label: 'Min (days)', data: [3, 5, 2, 1], backgroundColor: 'rgba(82,196,26,0.6)' }, { label: 'Avg (days)', data: [12, 8, 5, 3], backgroundColor: 'rgba(24,144,255,0.6)' }, { label: 'Max (days)', data: [45, 28, 18, 10], backgroundColor: 'rgba(255,77,79,0.6)' }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { family: 'Poppins', size: 11 } } } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Days' } } }, plugins: { legend: { position: 'right', labels: { font: { family: 'Poppins', size: 11 } } } } }
     },
     'sd1-chart2': {
         type: 'line',
@@ -563,12 +564,12 @@ const chartDataStore = {
     'sd2-chart2': {
         type: 'bar',
         data: { labels: ['B-84', 'B-85', 'B-86', 'B-87'], datasets: [{ label: 'Passed', data: [680, 720, 810, 790], backgroundColor: '#52c41a' }, { label: 'Failed', data: [120, 95, 80, 110], backgroundColor: '#ff4d4f' }, { label: 'Blocked', data: [40, 25, 30, 45], backgroundColor: '#faad14' }, { label: 'Not Run', data: [60, 70, 40, 55], backgroundColor: '#d9d9d9' }] },
-        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Test Cases' } } } }
     },
     'sd3-chart1': {
         type: 'bar',
         data: { labels: ['R4.0', 'R4.1', 'R4.2', 'R4.3', 'HF4.2.1'], datasets: [{ label: 'Defects', data: [24, 18, 32, 12, 8], backgroundColor: ['#52c41a', '#1890ff', '#faad14', '#1890ff', '#ff4d4f'] }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Defects' } } }, plugins: { legend: { display: false } } }
     },
     'sd3-chart2': {
         type: 'line',
@@ -578,7 +579,7 @@ const chartDataStore = {
     'sd4-chart1': {
         type: 'doughnut',
         data: { labels: ['Full Coverage', 'Partial', 'No Coverage'], datasets: [{ data: [65, 20, 15], backgroundColor: ['#52c41a', '#faad14', '#ff4d4f'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'right' } } }
     },
     'sd4-chart3': {
         type: 'scatter',
@@ -588,17 +589,17 @@ const chartDataStore = {
     'sd5-chart1': {
         type: 'doughnut',
         data: { labels: ['Manual', 'Automated', 'Component'], datasets: [{ data: [340, 310, 120], backgroundColor: ['#1890ff', '#52c41a', '#722ed1'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'right' } } }
     },
     'sd5-chart2': {
         type: 'bar',
         data: { labels: ['Login', 'Payment', 'Reports', 'API', 'Admin'], datasets: [{ label: 'Passed', data: [45, 32, 28, 52, 18], backgroundColor: '#52c41a' }, { label: 'Failed', data: [5, 8, 3, 12, 2], backgroundColor: '#ff4d4f' }, { label: 'Not Run', data: [10, 15, 9, 6, 20], backgroundColor: '#d9d9d9' }] },
-        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Test Cases' } } } }
     },
     'sd5-chart3': {
         type: 'bar',
         data: { labels: ['1-5', '6-10', '11-20', '21-50', '50+'], datasets: [{ label: 'Test Cases', data: [120, 210, 180, 95, 45], backgroundColor: 'rgba(24,144,255,0.6)' }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Test Cases' } } }, plugins: { legend: { display: false } } }
     },
     'sd5-chart4': {
         type: 'line',
@@ -608,22 +609,22 @@ const chartDataStore = {
     'sd6-chart1': {
         type: 'bar',
         data: { labels: ['Ian', 'Sara', 'Mike', 'Jennifer', 'David'], datasets: [{ label: 'Defects', data: [12, 8, 15, 6, 10], backgroundColor: '#ff4d4f' }, { label: 'Test Cases', data: [5, 12, 3, 9, 7], backgroundColor: '#1890ff' }, { label: 'Requirements', data: [3, 5, 2, 8, 4], backgroundColor: '#52c41a' }] },
-        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'Items Assigned' } } } }
     },
     'sd6-chart2': {
         type: 'bar',
         data: { labels: ['Ian', 'Sara', 'Mike', 'Jennifer', 'David'], datasets: [{ label: 'Avg days', data: [4.2, 3.1, 6.8, 2.5, 5.1], backgroundColor: ['#1890ff', '#52c41a', '#ff4d4f', '#52c41a', '#faad14'] }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Days' } } }, plugins: { legend: { display: false } } }
     },
     'sd7-chart1': {
         type: 'bar',
         data: { labels: ['B-84', 'B-85', 'B-86', 'B-87'], datasets: [{ label: 'Scheduled (min)', data: [120, 90, 150, 180], backgroundColor: 'rgba(24,144,255,0.5)' }, { label: 'Actual (min)', data: [135, 88, 175, 160], backgroundColor: 'rgba(255,77,79,0.5)' }] },
-        options: { responsive: true, maintainAspectRatio: false }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Minutes' } } } }
     },
     'sd8-chart1': {
         type: 'bar',
         data: { labels: ['Code Bug', 'Config Error', 'Data Issue', 'Environment', 'UI/UX', 'Integration'], datasets: [{ label: 'Defects', data: [38, 22, 18, 12, 10, 15], backgroundColor: ['#ff4d4f', '#faad14', '#1890ff', '#52c41a', '#722ed1', '#F6B168'] }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Defects' } } }, plugins: { legend: { display: false } } }
     }
 };
 
@@ -875,7 +876,7 @@ document.querySelectorAll('.product-card').forEach(card => {
 let currentView = 'gallery';
 let isEditMode = false;
 
-customizeBtn.addEventListener('click', () => {
+customizeBtn?.addEventListener('click', () => {
     isEditMode = true;
     document.body.classList.add('edit-mode');
     customizeBtn.classList.add('hidden');
@@ -884,7 +885,7 @@ customizeBtn.addEventListener('click', () => {
     grid.enableResize(true);
 });
 
-saveLayoutBtn.addEventListener('click', () => {
+saveLayoutBtn?.addEventListener('click', () => {
     isEditMode = false;
     document.body.classList.remove('edit-mode');
     editModeActions.classList.add('hidden');
@@ -894,7 +895,7 @@ saveLayoutBtn.addEventListener('click', () => {
     showToast('Layout saved successfully');
 });
 
-resetLayoutBtn.addEventListener('click', () => {
+resetLayoutBtn?.addEventListener('click', () => {
     if (currentDashboardId) {
         // Force reload from configs, simulating reset to default
         loadDashboard(currentDashboardId);
@@ -924,9 +925,9 @@ availableWidgets.forEach(w => {
     `;
 });
 
-addWidgetBtn.addEventListener('click', () => {
-    drawerOverlay.classList.remove('hidden');
-    widgetDrawer.classList.remove('hidden');
+addWidgetBtn?.addEventListener('click', () => {
+    if (drawerOverlay) drawerOverlay.classList.remove('hidden');
+    if (widgetDrawer) widgetDrawer.classList.remove('hidden');
 });
 
 const closeDrawer = () => {
@@ -934,8 +935,8 @@ const closeDrawer = () => {
     widgetDrawer.classList.add('hidden');
 };
 
-closeDrawerBtn.addEventListener('click', closeDrawer);
-drawerOverlay.addEventListener('click', closeDrawer);
+closeDrawerBtn?.addEventListener('click', closeDrawer);
+drawerOverlay?.addEventListener('click', closeDrawer);
 
 grid.on('dropped', function (event, previousWidget, newWidget) {
     closeDrawer();
