@@ -984,7 +984,7 @@ function initGridStack() {
                 acceptWidgets: true,
                 margin: 8,
                 column: 12,
-                resizable: { handles: 'e, se, s, sw, w' } // Enable multiple resize handles
+                resizable: { handles: 'n, e, s, w, ne, se, sw, nw' } // Enable full 8-way resize
             }, gridEl);
 
             // Add default widgets for preview
